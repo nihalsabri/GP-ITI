@@ -38,13 +38,9 @@
             <td>{{ c.name }}</td>
             <td>{{ c.email }}</td>
             <td>{{ c.phone }}</td>
-
-            <!-- Orders info -->
             <td>{{ c.orders?.length || 0 }}</td>
             <td>{{ getLastOrderDisplay(c.orders) || '-' }}</td>
-
             <td>{{ c.createdAt ? (c.createdAt | date : 'dd/MM/yyyy, HH:mm') : '-' }}</td>
-
             <td>
               <button class="btn btn-danger btn-sm" (click)="deleteClient(c.id, c.name)">
                 Delete
@@ -81,18 +77,57 @@
       <input type="text" [(ngModel)]="formData.phone" />
     </div>
 
-    <!-- Optional Orders -->
-    <div class="form-row">
-      <label>Orders (optional)</label>
-      <textarea
-        [(ngModel)]="formData.ordersText"
-        placeholder="Enter initial orders (comma separated)..."
-        rows="3"
-      ></textarea>
-      <small class="hint">You can leave this empty. Example: <code>order1, order2</code></small>
+    <hr />
+
+    <div
+      style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px"
+    >
+      <h5 style="margin: 0">Orders (optional)</h5>
+      <button class="btn btn-secondary btn-sm" (click)="addOrder()">+ Add Order</button>
     </div>
 
-    <div class="modal-actions">
+    <div *ngIf="formData.orders?.length; else noOrders">
+      <div *ngFor="let order of formData.orders; let i = index" class="order-block">
+        <!-- Tradesperson select -->
+        <div class="form-row">
+          <label>Tradesperson</label>
+          <select [(ngModel)]="order.tradespersonId" (change)="onTradespersonSelect(order)">
+            <option value="">-- Select Tradesperson --</option>
+            <option *ngFor="let t of tradespeopleList" [value]="t.id">
+              {{ t.name }} — {{ t.trade }} {{ t.phone ? '(' + t.phone + ')' : '' }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Service input -->
+        <div class="form-row">
+          <label>Service</label>
+          <input type="text" [(ngModel)]="order.service" placeholder="e.g. Pipe repair" />
+        </div>
+
+        <!-- Small display: show selected tradesperson phone & email -->
+        <div class="order-meta" *ngIf="getTradesperson(order.tradespersonId) as selectedTp">
+          <div class="meta-row">
+            <small><strong>Phone:</strong> {{ selectedTp.phone || '-' }}</small>
+            <small style="margin-left: 12px"
+              ><strong>Email:</strong> {{ selectedTp.email || '-' }}</small
+            >
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px">
+          <button class="btn btn-danger btn-sm" (click)="removeOrder(i)">Remove</button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noOrders>
+      <p class="hint">
+        No orders added. Click <strong>+ Add Order</strong> to attach a tradesperson and service.
+      </p>
+    </ng-template>
+
+    <div class="modal-actions" style="margin-top: 12px">
       <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
       <button class="btn btn-primary" (click)="saveClient()">Save</button>
     </div>
