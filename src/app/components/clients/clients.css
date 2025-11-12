@@ -33,14 +33,17 @@
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
 }
 .modal-card {
-  width: 520px;
+  width: 620px;
   max-width: 95%;
   background: white;
   padding: 18px;
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow: auto;
 }
 .form-row {
   display: flex;
@@ -52,20 +55,30 @@
   margin-bottom: 6px;
 }
 .form-row input,
-.form-row textarea {
+.form-row select {
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ddd;
   font-size: 14px;
 }
-textarea {
-  resize: vertical;
+.order-block {
+  background: #f8f9fa;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.hint {
-  color: #777;
-  font-size: 12px;
-  margin-top: 6px;
-  display: block;
+.order-meta {
+  padding: 6px 8px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px dashed #e7e7e7;
+}
+.meta-row small {
+  color: #333;
 }
 .modal-actions {
   display: flex;
@@ -90,6 +103,11 @@ textarea {
 .btn-danger {
   background: #dc3545;
   color: white;
+}
+.hint {
+  color: #777;
+  font-size: 13px;
+  margin-top: 6px;
 }
 .required {
   color: red;
