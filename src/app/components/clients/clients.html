@@ -1,4 +1,5 @@
 <div class="card">
+  <!-- Header -->
   <div class="card-header">
     <div class="header-left">
       <h3>Clients</h3>
@@ -10,42 +11,49 @@
         (input)="filterData()"
         placeholder="Search clients..."
       />
-      <button class="btn btn-primary" (click)="openAddModal()">Add Client</button>
+      <button class="btn btn-primary" (click)="openAddModal()">+ Add Client</button>
     </div>
   </div>
 
+  <!-- Table -->
   <div class="card-body table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
           <th>#</th>
           <th>Name</th>
-          <th>Phone</th>
           <th>Email</th>
+          <th>Phone</th>
+          <th>Orders Count</th>
           <th>Last Order</th>
-          <th>CreatedAt</th>
+          <th>Created At</th>
           <th>Actions</th>
         </tr>
       </thead>
+
       <tbody>
         <ng-container *ngIf="filteredClients$ | async as clients">
           <tr *ngFor="let c of clients; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ c.name }}</td>
-            <td>{{ c.phone }}</td>
             <td>{{ c.email }}</td>
+            <td>{{ c.phone }}</td>
+
+            <!-- Orders info -->
+            <td>{{ c.orders?.length || 0 }}</td>
             <td>{{ getLastOrderDisplay(c.orders) || '-' }}</td>
-            <td>{{ c.createdAt ? (c.createdAt | date : 'dd/MM/yyyy') : '-' }}</td>
+
+            <td>{{ c.createdAt ? (c.createdAt | date : 'dd/MM/yyyy, HH:mm') : '-' }}</td>
+
             <td>
-              <!-- Only delete available from dashboard -->
               <button class="btn btn-danger btn-sm" (click)="deleteClient(c.id, c.name)">
-                del
+                Delete
               </button>
             </td>
           </tr>
 
           <tr *ngIf="clients.length === 0">
-            <td colspan="7" class="text-center">No clients yet</td>
+            <td colspan="8" class="text-center">No clients yet</td>
           </tr>
         </ng-container>
       </tbody>
@@ -53,21 +61,35 @@
   </div>
 </div>
 
-<!-- Add Client Modal (simple inline modal) -->
+<!-- Add Client Modal -->
 <div class="modal-backdrop" *ngIf="showAddModal">
   <div class="modal-card">
     <h4>Add Client</h4>
+
     <div class="form-row">
-      <label>Name</label>
+      <label>Name <span class="required">*</span></label>
       <input type="text" [(ngModel)]="formData.name" />
     </div>
+
     <div class="form-row">
-      <label>Email</label>
+      <label>Email <span class="required">*</span></label>
       <input type="email" [(ngModel)]="formData.email" />
     </div>
+
     <div class="form-row">
-      <label>Phone</label>
+      <label>Phone <span class="required">*</span></label>
       <input type="text" [(ngModel)]="formData.phone" />
+    </div>
+
+    <!-- Optional Orders -->
+    <div class="form-row">
+      <label>Orders (optional)</label>
+      <textarea
+        [(ngModel)]="formData.ordersText"
+        placeholder="Enter initial orders (comma separated)..."
+        rows="3"
+      ></textarea>
+      <small class="hint">You can leave this empty. Example: <code>order1, order2</code></small>
     </div>
 
     <div class="modal-actions">
