@@ -10,8 +10,8 @@ interface Client {
   name: string;
   email: string;
   phone: string;
-  orders?: any[]; // store order objects, for now can be an array
-  createdAt: string; // ISO string or formatted date
+  orders?: any[];
+  createdAt: string;
 }
 
 @Component({
@@ -26,14 +26,15 @@ export class Clients implements OnInit {
   filteredClients$!: Observable<Client[]>;
   searchTerm = '';
 
-  // Modal flags
+  // modal control
   showAddModal = false;
 
-  // form model
-  formData: Partial<Client> = {
+  // form data (ordersText for optional input)
+  formData: Partial<Client> & { ordersText?: string } = {
     name: '',
     email: '',
     phone: '',
+    ordersText: '',
   };
 
   constructor(private dataService: DataService) {}
@@ -43,17 +44,15 @@ export class Clients implements OnInit {
   }
 
   loadData() {
-    // expecting DataService.getData('clients') to return Observable<Client[]>
     this.clients$ = this.dataService.getData('clients').pipe(
-      // ensure id exists on each object if backend returns key as child prop
       map((arr: any[]) =>
         arr.map((item: any) => ({
-          id: item.id ?? item.key ?? item._id ?? item?.$key ?? '',
+          id: item.id ?? item.key ?? '',
           name: item.name ?? '',
           email: item.email ?? '',
           phone: item.phone ?? '',
           orders: Array.isArray(item.orders) ? item.orders : [],
-          createdAt: item.createdAt ?? item.createdAtString ?? '',
+          createdAt: item.createdAt ?? '',
         }))
       )
     );
@@ -82,18 +81,16 @@ export class Clients implements OnInit {
 
   openAddModal() {
     this.showAddModal = true;
-    this.formData = { name: '', email: '', phone: '' };
+    this.formData = { name: '', email: '', phone: '', ordersText: '' };
   }
 
   closeModal() {
     this.showAddModal = false;
-    this.formData = { name: '', email: '', phone: '' };
+    this.formData = { name: '', email: '', phone: '', ordersText: '' };
   }
 
-  // helper: format last order from orders array
   getLastOrderDisplay(orders?: any[]): string {
     if (!orders || orders.length === 0) return '';
-    // assume order has createdAt or date field — pick last by createdAt
     const sorted = [...orders].sort((a, b) => {
       const da = new Date(a.createdAt ?? a.date ?? 0).getTime();
       const db = new Date(b.createdAt ?? b.date ?? 0).getTime();
@@ -106,8 +103,9 @@ export class Clients implements OnInit {
   }
 
   deleteClient(id: string, name?: string) {
-    if (!id) return alert('Invalid client id');
+    if (!id) return alert('Invalid client ID');
     if (!confirm(`Are you sure you want to delete "${name ?? 'this client'}"?`)) return;
+
     this.dataService
       .deleteData('clients', id)
       .then(() => console.log('Client deleted'))
@@ -118,19 +116,28 @@ export class Clients implements OnInit {
   }
 
   saveClient() {
-    // validation
     if (!this.formData.name || !this.formData.email || !this.formData.phone) {
-      alert('Please fill name, email and phone.');
+      alert('Please fill name, email, and phone.');
       return;
     }
 
-    // prepare payload for backend
+    // Parse optional orders input (comma-separated -> array)
+    const orders =
+      this.formData.ordersText && this.formData.ordersText.trim()
+        ? this.formData.ordersText.includes(',')
+          ? this.formData.ordersText
+              .split(',')
+              .map((o) => o.trim())
+              .filter((o) => o)
+          : [this.formData.ordersText.trim()]
+        : [];
+
     const payload = {
       name: this.formData.name,
       email: this.formData.email,
       phone: this.formData.phone,
-      orders: [], // required: empty array for new clients
-      createdAt: new Date().toISOString(), // store ISO date; you can format on display
+      orders,
+      createdAt: new Date().toISOString(),
     };
 
     this.dataService
