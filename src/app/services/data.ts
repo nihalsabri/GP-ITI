@@ -11,6 +11,7 @@ export class DataService {
   constructor() {
     this.db = getDatabase();
   }
+  // crud operations
   addData(path: string, data: any): Promise<void> {
     try {
       const listRef = ref(this.db, path);
