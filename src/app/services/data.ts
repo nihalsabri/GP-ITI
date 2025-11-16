@@ -11,6 +11,9 @@ export class DataService {
     this.db = getDatabase();
   }
 
+
+  // crud operations
+>>>>>>> e3eb1a0 (auth configration)
   addData(path: string, data: any): Promise<void> {
     console.log('Adding data to', path, data);
     const listRef = ref(this.db, path);
