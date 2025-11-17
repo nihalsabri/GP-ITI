@@ -11,6 +11,7 @@ export class AuthService {
 
   constructor() {}
   // login method to authenticate user with email and password
+  // login method to authenticate user with email and password
   login(email: string, password: string): Promise<any> {
     return this.firebaseAuth.signInWithEmailAndPassword(email, password);
   }
