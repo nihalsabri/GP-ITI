@@ -16,6 +16,7 @@ import { App } from './app/app';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 import { environment } from './environments/environment';
 
@@ -29,7 +30,8 @@ bootstrapApplication(App, {
     importProvidersFrom(
       AngularFireModule.initializeApp(environment.firebase),
       AngularFireDatabaseModule,
-      AngularFireStorageModule
+      AngularFireStorageModule,
+      AngularFireAuthModule
     ),
   ],
 }).catch((err) => console.error(err));
