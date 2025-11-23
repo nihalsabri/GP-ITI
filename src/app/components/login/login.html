@@ -1,0 +1,23 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2>Admin Login</h2>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <label for="email">Email</label>
+    <input id="email" type="email" [(ngModel)]="email" placeholder="you@example.com" />
+
+    <label for="password">Password</label>
+    <input id="password" type="password" [(ngModel)]="password" placeholder="••••••••" />
+
+    <div class="actions">
+      <button class="btn btn-primary" (click)="login()" [disabled]="loading || !email || !password">
+        {{ loading ? 'Signing in...' : 'Sign in' }}
+      </button>
+    </div>
+
+    <div class="help">
+      <small>Sign in with an account that has admin access.</small>
+    </div>
+  </div>
+</div>
