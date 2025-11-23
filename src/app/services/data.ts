@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { getDatabase, ref, push, set, onValue, remove, update, off, Database } from 'firebase/database';
 =======
 import { getDatabase, ref, push, set, onValue, remove, update,
   off, Database} from 'firebase/database';
 >>>>>>> 6699d536e6d86b470928cd8fec0d77a33a592082
+=======
+import { getDatabase, ref, push, set, onValue, remove, update, off, Database } from 'firebase/database';
+>>>>>>> 83da4c2 (chore: update Angular dependencies to latest versions and refactor services component)
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,6 +19,7 @@ export class DataService {
   constructor() {
     this.db = getDatabase();
   }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -45,11 +50,23 @@ export class DataService {
       return Promise.reject(error);
     }
 >>>>>>> 6699d536e6d86b470928cd8fec0d77a33a592082
+=======
+
+  addData(path: string, data: any): Promise<void> {
+    console.log('Adding data to', path, data);
+    const listRef = ref(this.db, path);
+    const newRef = push(listRef);
+    const id = newRef.key;
+    return set(newRef, { id, ...data, createdAt: new Date().toISOString() });
+>>>>>>> 83da4c2 (chore: update Angular dependencies to latest versions and refactor services component)
   }
 
   getData(path: string): Observable<any[]> {
     return new Observable(observer => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 83da4c2 (chore: update Angular dependencies to latest versions and refactor services component)
       const dbRef = ref(this.db, path);
       onValue(dbRef, snapshot => {
         const data = snapshot.val();
@@ -61,6 +78,7 @@ export class DataService {
           observer.next([]);
         }
       }, error => observer.error(error));
+<<<<<<< HEAD
 =======
       try {
         const dbRef = ref(this.db, path);
@@ -93,10 +111,13 @@ export class DataService {
         return () => {};
       }
 >>>>>>> 6699d536e6d86b470928cd8fec0d77a33a592082
+=======
+>>>>>>> 83da4c2 (chore: update Angular dependencies to latest versions and refactor services component)
     });
   }
 
   updateData(path: string, id: string, data: any): Promise<void> {
+<<<<<<< HEAD
 <<<<<<< HEAD
     console.log('Updating data', id, 'in', path, data);
     const dbRef = ref(this.db, `${path}/${id}`);
@@ -120,17 +141,19 @@ export class DataService {
       console.error(' Error in updateData:', error);
       return Promise.reject(error);
     }
+=======
+    console.log('Updating data', id, 'in', path, data);
+    const dbRef = ref(this.db, `${path}/${id}`);
+    return update(dbRef, { ...data, updatedAt: new Date().toISOString() });
+>>>>>>> 83da4c2 (chore: update Angular dependencies to latest versions and refactor services component)
   }
 
   deleteData(path: string, id: string): Promise<void> {
-    try {
-      const dbRef = ref(this.db, `${path}/${id}`);
-      return remove(dbRef);
-    } catch (error) {
-      console.error('Error in deleteData:', error);
-      return Promise.reject(error);
-    }
+    console.log('Deleting data', id, 'from', path);
+    const dbRef = ref(this.db, `${path}/${id}`);
+    return remove(dbRef);
   }
+<<<<<<< HEAD
 
   checkConnection(): Observable<boolean> {
     return new Observable(observer => {
@@ -143,3 +166,6 @@ export class DataService {
   }
 }
 >>>>>>> 6699d536e6d86b470928cd8fec0d77a33a592082
+=======
+}
+>>>>>>> 83da4c2 (chore: update Angular dependencies to latest versions and refactor services component)
