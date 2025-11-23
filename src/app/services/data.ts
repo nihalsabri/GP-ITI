@@ -10,8 +10,9 @@ export class DataService {
   constructor() {
     this.db = getDatabase();
   }
+<<<<<<< HEAD
 
-
+=======
   // crud operations
 >>>>>>> e3eb1a0 (auth configration)
   addData(path: string, data: any): Promise<void> {
