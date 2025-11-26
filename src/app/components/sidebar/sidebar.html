@@ -1,11 +1,33 @@
-<div class="sidebar bg-light text-dark h-100 p-3">
-  <h4>Dashboard</h4>
-  <nav class="nav flex-column">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-      class="nav-link text-dark">Main</a>
-    <a routerLink="/orders" routerLinkActive="active" class="nav-link text-dark">Orders</a>
-    <a routerLink="/clients" routerLinkActive="active" class="nav-link text-dark">Clients</a>
-    <a routerLink="/services" routerLinkActive="active" class="nav-link text-dark">Services</a>
-    <a routerLink="/tradespeople" routerLinkActive="active" class="nav-link text-dark">Tradespeople</a>
+<div class="sidebar" [class.collapsed]="isCollapsed">
+
+  <div class="sidebar-header">
+    <button class="btn-toggle" (click)="toggleSidebar()" title="Toggle Sidebar">
+      <span class="toggle-icon">{{ isCollapsed ? '→' : '←' }}</span>
+    </button>
+    <h4 class="dashboard-title" [class.hidden]="isCollapsed">Dashboard</h4>
+  </div>
+
+  <nav class="nav-menu" [class.hidden]="isCollapsed">
+    <a routerLink="/orders" routerLinkActive="active" class="nav-link">
+      <span class="icon"></span>
+      <span class="label">Orders</span>
+    </a>
+    <a routerLink="/clients" routerLinkActive="active" class="nav-link">
+      <span class="icon"></span>
+      <span class="label">Clients</span>
+    </a>
+    <a routerLink="/services" routerLinkActive="active" class="nav-link">
+      <span class="icon"></span>
+      <span class="label">Services</span>
+    </a>
+    <a routerLink="/tradespeople" routerLinkActive="active" class="nav-link">
+      <span class="icon"></span>
+      <span class="label">Tradespeople</span>
+    </a>
   </nav>
+
+  <button class="btn-open-sidebar" *ngIf="isCollapsed" (click)="toggleSidebar()" title="Open Sidebar">
+    <span class="open-icon">☰</span>
+  </button>
+
 </div>

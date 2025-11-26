@@ -1,6 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { DataService } from '../../services/data.service';
+
+interface Client {
+  id: number;
+  name: string;
+}
+
+interface Tradesperson {
+  id: number;
+  name: string;
+  job: string;
+}
+
+interface OrderData {
+  id?: string;
+  clientId: number;
+  tradespersonId: number;
+  serviceType: string;
+  status: string;
+  date: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 @Component({
   selector: 'app-orders',
@@ -9,57 +32,87 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule]
 })
-export class OrdersComponent {
-  isModalOpen = false;
-
-  clients = [
+export class OrdersComponent implements OnInit {
+  orders: OrderData[] = [];
+  clients: Client[] = [
     { id: 1, name: 'أحمد محمد' },
     { id: 2, name: 'محمود علي' },
     { id: 3, name: 'سارة جمال' }
   ];
-
-  tradespeople = [
+  tradespeople: Tradesperson[] = [
     { id: 101, name: 'حسن عبد الله', job: 'كهربائي' },
     { id: 102, name: 'كريم مصطفى', job: 'سباك' },
     { id: 103, name: 'علي سعيد', job: 'نجار' }
   ];
 
-  orders = [
-    {
-      id: '#001',
-      clientId: 1,
-      tradespersonId: 101,
-      serviceType: 'كهرباء',
-      status: 'جديدة',
-      date: '2025-11-07'
-    },
-    {
-      id: '#002',
-      clientId: 2,
-      tradespersonId: 102,
-      serviceType: 'سباكة',
-      status: 'مكتملة',
-      date: '2025-11-06'
+  isModalOpen = false;
+  isEditMode = false;
+  newOrder: OrderData;
+
+  constructor(private dataService: DataService) {
+    this.newOrder = this.resetOrder();
+  }
+
+  ngOnInit(): void {
+    this.loadOrders();
+  }
+
+  // ====== تحميل الأوردرات من Firebase ======
+  loadOrders() {
+    this.dataService.getData('orders').subscribe(
+      (data: OrderData[]) => {
+        this.orders = data || [];
+      },
+      (error: any) => console.error('Error loading orders:', error)
+    );
+  }
+
+  // ====== فتح المودال ======
+  openModal(order?: OrderData) {
+    if (order) {
+      this.isEditMode = true;
+      this.newOrder = { ...order };
+    } else {
+      this.isEditMode = false;
+      this.newOrder = this.resetOrder();
     }
-  ];
-
-  newOrder = {
-    id: '',
-    clientId: 0,
-    tradespersonId: 0,
-    serviceType: '',
-    status: 'جديدة',
-    date: ''
-  };
-
-  openModal() {
     this.isModalOpen = true;
   }
 
   closeModal() {
     this.isModalOpen = false;
+    this.newOrder = this.resetOrder();
   }
 
+  onOverlayClick(event: any) {
+    if (event.target.classList.contains('overlay')) {
+      this.closeModal();
+    }
+  }
+
+  // ====== حفظ أو تحديث الأوردر ======
+  saveOrder(form: NgForm) {
+    if (!form.valid) return;
+
+    if (this.isEditMode && this.newOrder.id) {
+      this.dataService.updateData('orders', this.newOrder.id, this.newOrder)
+        .then(() => this.closeModal())
+        .catch((error: any) => console.error('Error updating order:', error));
+    } else {
+      this.dataService.addData('orders', this.newOrder)
+        .then(() => this.closeModal())
+        .catch((err: any) => console.error('Error adding order:', err));
+    }
+  }
+
+  // ====== حذف الأوردر ======
+  deleteOrder(id?: string) {
+    if (!id) return;
+    this.dataService.deleteData('orders', id)
+      .catch((err: any) => console.error('Error deleting order:', err));
+  }
+
+  // ====== مساعدة ======
   getClientName(id: number) {
     const client = this.clients.find(c => c.id === id);
     return client ? client.name : '-';
@@ -70,11 +123,14 @@ export class OrdersComponent {
     return person ? person.name : '-';
   }
 
-  addOrder() {
-    const newId = '#00' + (this.orders.length + 1);
-    const orderData = { ...this.newOrder, id: newId };
-    this.orders.push(orderData);
-    this.newOrder = { id: '', clientId: 0, tradespersonId: 0, serviceType: '', status: 'جديدة', date: '' };
-    this.closeModal();
+  resetOrder(): OrderData {
+    const today = new Date().toISOString().split('T')[0];
+    return {
+      clientId: 0,
+      tradespersonId: 0,
+      serviceType: '',
+      status: 'جديدة',
+      date: today
+    };
   }
 }
