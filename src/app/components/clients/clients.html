@@ -30,26 +30,27 @@
       </thead>
 
       <tbody>
-        <ng-container *ngIf="filteredClients$ | async as clients">
-          <tr *ngFor="let c of clients; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ c.name }}</td>
-            <td>{{ c.email }}</td>
-            <td>{{ c.phone }}</td>
-            <td>{{ c.orders?.length || 0 }}</td>
-            <td>{{ getLastOrderDisplay(c.orders) || '-' }}</td>
-            <td>{{ c.createdAt ? (c.createdAt | date : 'dd/MM/yyyy, HH:mm') : '-' }}</td>
-            <td>
-              <button class="btn btn-danger btn-sm" (click)="deleteClient(c.id, c.name)">
-                Delete
-              </button>
-            </td>
-          </tr>
-
-          <tr *ngIf="clients.length === 0">
-            <td colspan="8" class="text-center">No clients yet</td>
-          </tr>
-        </ng-container>
+        @for (c of filteredClients$ | async; track c.id; let i = $index) {
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>{{ c.name }}</td>
+          <td>{{ c.email }}</td>
+          <td>{{ c.phone }}</td>
+          <td>{{ c.orders?.length || 0 }}</td>
+          <td>{{ getLastOrderDisplay(c.orders) || '-' }}</td>
+          <td>{{ c.createdAt ? (c.createdAt | date : 'dd/MM/yyyy, HH:mm') : '-' }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="deleteClient(c.id, c.name)">
+              Delete
+            </button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <!-- Note: The colspan here is 8 -->
+          <td colspan="8" class="text-center">No clients yet</td>
+        </tr>
+        }
       </tbody>
     </table>
   </div>
