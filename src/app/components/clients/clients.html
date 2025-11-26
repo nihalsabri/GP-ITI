@@ -38,7 +38,7 @@
           <td>{{ c.phone }}</td>
           <td>{{ c.orders?.length || 0 }}</td>
           <td>{{ getLastOrderDisplay(c.orders) || '-' }}</td>
-          <td>{{ c.createdAt ? (c.createdAt | date : 'dd/MM/yyyy, HH:mm') : '-' }}</td>
+          <td>@if (c.createdAt) { {{ c.createdAt | date : 'dd/MM/yyyy, HH:mm' }} } @else { - }</td>
           <td>
             <button class="btn btn-danger btn-sm" (click)="deleteClient(c.id, c.name)">
               Delete
@@ -57,26 +57,33 @@
 </div>
 
 <!-- Add Client Modal -->
-<div class="modal-backdrop" *ngIf="showAddModal">
+@if (showAddModal) {
+<div class="modal-backdrop">
   <div class="modal-card">
     <h4>Add Client</h4>
 
     <div class="form-row">
       <label>Name <span class="required">*</span></label>
       <input type="text" [(ngModel)]="formData.name" (input)="clearFieldError('name')" />
-      <div class="field-error" *ngIf="formErrors.name">{{ formErrors.name }}</div>
+      @if (formErrors.name) {
+      <div class="field-error">{{ formErrors.name }}</div>
+      }
     </div>
 
     <div class="form-row">
       <label>Email <span class="required">*</span></label>
       <input type="email" [(ngModel)]="formData.email" (input)="clearFieldError('email')" />
-      <div class="field-error" *ngIf="formErrors.email">{{ formErrors.email }}</div>
+      @if (formErrors.email) {
+      <div class="field-error">{{ formErrors.email }}</div>
+      }
     </div>
 
     <div class="form-row">
       <label>Phone <span class="required">*</span></label>
       <input type="text" [(ngModel)]="formData.phone" (input)="clearFieldError('phone')" />
-      <div class="field-error" *ngIf="formErrors.phone">{{ formErrors.phone }}</div>
+      @if (formErrors.phone) {
+      <div class="field-error">{{ formErrors.phone }}</div>
+      }
     </div>
 
     <hr />
@@ -88,57 +95,63 @@
       <button class="btn btn-secondary btn-sm" (click)="addOrder()">+ Add Order</button>
     </div>
 
-    <div *ngIf="formData.orders?.length; else noOrders">
-      <div *ngFor="let order of formData.orders; let i = index" class="order-block">
-        <div class="form-row">
-          <label>Tradesperson</label>
-          <select
-            [(ngModel)]="order.tradespersonId"
-            (change)="onTradespersonSelect(order); clearOrderError(i, 'tradespersonId')"
+    @for (order of formData.orders; track $index) {
+    <div class="order-block">
+      <div class="form-row">
+        <label>Tradesperson</label>
+        <select
+          [(ngModel)]="order.tradespersonId"
+          (change)="onTradespersonSelect(order); clearOrderError($index, 'tradespersonId')"
+        >
+          <option value="">-- Select Tradesperson --</option>
+          @for (t of tradespeopleList; track t.id) {
+          <option [value]="t.id">
+            {{ t.name }} — {{ t.trade }} @if (t.phone) { ({{ t.phone }}) }
+          </option>
+          }
+        </select>
+        @if (ordersErrors[$index]?.tradespersonId) {
+        <div class="field-error">
+          {{ ordersErrors[$index].tradespersonId }}
+        </div>
+        }
+      </div>
+
+      <div class="form-row">
+        <label>Service</label>
+        <input
+          type="text"
+          [(ngModel)]="order.service"
+          (input)="clearOrderError($index, 'service')"
+          placeholder="e.g. Pipe repair"
+        />
+        @if (ordersErrors[$index]?.service) {
+        <div class="field-error">
+          {{ ordersErrors[$index].service }}
+        </div>
+        }
+      </div>
+
+      @if (getTradesperson(order.tradespersonId); as selectedTp) {
+      <div class="order-meta">
+        <div class="meta-row">
+          <small><strong>Phone:</strong> {{ selectedTp.phone || '-' }}</small>
+          <small style="margin-left: 12px"
+            ><strong>Email:</strong> {{ selectedTp.email || '-' }}</small
           >
-            <option value="">-- Select Tradesperson --</option>
-            <option *ngFor="let t of tradespeopleList" [value]="t.id">
-              {{ t.name }} — {{ t.trade }} {{ t.phone ? '(' + t.phone + ')' : '' }}
-            </option>
-          </select>
-          <div class="field-error" *ngIf="ordersErrors[i]?.tradespersonId">
-            {{ ordersErrors[i].tradespersonId }}
-          </div>
-        </div>
-
-        <div class="form-row">
-          <label>Service</label>
-          <input
-            type="text"
-            [(ngModel)]="order.service"
-            (input)="clearOrderError(i, 'service')"
-            placeholder="e.g. Pipe repair"
-          />
-          <div class="field-error" *ngIf="ordersErrors[i]?.service">
-            {{ ordersErrors[i].service }}
-          </div>
-        </div>
-
-        <div class="order-meta" *ngIf="getTradesperson(order.tradespersonId) as selectedTp">
-          <div class="meta-row">
-            <small><strong>Phone:</strong> {{ selectedTp.phone || '-' }}</small>
-            <small style="margin-left: 12px"
-              ><strong>Email:</strong> {{ selectedTp.email || '-' }}</small
-            >
-          </div>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 8px">
-          <button class="btn btn-danger btn-sm" (click)="removeOrder(i)">Remove</button>
         </div>
       </div>
-    </div>
+      }
 
-    <ng-template #noOrders>
-      <p class="hint">
-        No orders added. Click <strong>+ Add Order</strong> to attach a tradesperson and service.
-      </p>
-    </ng-template>
+      <div style="display: flex; justify-content: flex-end; gap: 8px">
+        <button class="btn btn-danger btn-sm" (click)="removeOrder($index)">Remove</button>
+      </div>
+    </div>
+    } @empty {
+    <p class="hint">
+      No orders added. Click <strong>+ Add Order</strong> to attach a tradesperson and service.
+    </p>
+    }
 
     <div class="modal-actions" style="margin-top: 12px">
       <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
@@ -146,11 +159,15 @@
     </div>
   </div>
 </div>
+}
 
 <!-- Toast -->
-<div class="toast toast-success" *ngIf="toastVisible && toastType === 'success'">
+@switch (toastType) { @case ('success') { @if (toastVisible) {
+<div class="toast toast-success">
   {{ toastMessage }}
 </div>
-<div class="toast toast-error" *ngIf="toastVisible && toastType === 'error'">
+} } @case ('error') { @if (toastVisible) {
+<div class="toast toast-error">
   {{ toastMessage }}
 </div>
+} } }
