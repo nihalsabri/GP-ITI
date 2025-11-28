@@ -11,3 +11,5 @@ export const environment = {
     measurementId: 'G-33RXSCD5QB',
   },
 };
+};
+
