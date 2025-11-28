@@ -159,6 +159,7 @@ export class ServicesComponent implements OnInit {
       return;
     }
 
+    console.log('Submitting form...', this.serviceForm.value);
     this.loading = true;
     const serviceData = this.serviceForm.value;
     console.log('📦 Service data to save:', serviceData);
@@ -193,7 +194,6 @@ export class ServicesComponent implements OnInit {
           this.loading = false;
         });
     }
-  }
 
   closeModal(): void {
     console.log('🚪 Closing modal');
