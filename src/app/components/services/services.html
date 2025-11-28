@@ -114,7 +114,8 @@
     <input
       type="text"
       placeholder="🔍 ابحث عن خدمة..."
-      (keyup)="applyFilter($event)">
+      [(ngModel)]="searchTerm"
+      (input)="applyFilter($event)">
   </div>
 
   <!-- Table Section -->
@@ -126,7 +127,7 @@
     </div>
 
     <!-- الجدول -->
-    <table *ngIf="!loading">
+    <table *ngIf="!loading && (filteredServices$ | async) as services">
       <thead>
         <tr>
           <th>الصورة</th>
@@ -134,11 +135,12 @@
           <th>الفئة</th>
           <th>السعر</th>
           <th>الحالة</th>
+          <th>تاريخ الإضافة</th>
           <th>الإجراءات</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let service of filteredServices" class="table-row">
+        <tr *ngFor="let service of services" class="table-row">
           <td>
             <div class="service-image">
               <img [src]="service.imageUrl || 'https://via.placeholder.com/60'" [alt]="service.name">
@@ -162,6 +164,9 @@
             </span>
           </td>
           <td>
+            <span class="date">{{ service.createdAt | date:'dd/MM/yyyy' }}</span>
+          </td>
+          <td>
             <div class="actions">
               <button class="btn-icon btn-edit" (click)="onEdit(service)" title="تعديل">
                 ✏️
@@ -176,7 +181,7 @@
     </table>
 
     <!-- No Data Message -->
-    <div class="no-data" *ngIf="!loading && filteredServices.length === 0">
+    <div class="no-data" *ngIf="!loading && (filteredServices$ | async)?.length === 0">
       <div class="no-data-icon">📭</div>
       <p>لا توجد خدمات مسجلة</p>
       <button class="btn-primary" (click)="onAddNew()">

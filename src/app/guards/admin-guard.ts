@@ -32,12 +32,9 @@ export const adminGuard: CanActivateFn = (route, state) => {
     // استنى لحد ما الuser يبقى ليس null
     filter((u) => u !== null),
     take(1),
-    switchMap((user) => {
-      if (!user) return of(router.parseUrl('/login') as UrlTree);
-      return auth.isAdmin$.pipe(
-        take(1),
-        map((isAdmin) => (isAdmin ? true : (router.parseUrl('/login') as UrlTree)))
-      );
+    map((isAdmin) => {
+      if (isAdmin) return true;
+      return router.parseUrl('/services');
     })
   );
 };
