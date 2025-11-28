@@ -39,14 +39,6 @@ export class ServicesComponent implements OnInit {
     this.serviceForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      category: ['', Validators.required],
-      price: [0, [Validators.required, Validators.min(0)]],
-      isActive: [true],
-    });
-  }
-
-  ngOnInit(): void {
-    this.loadServices();
   }
 
   loadServices(): void {
@@ -65,16 +57,6 @@ export class ServicesComponent implements OnInit {
   onAddNew(): void {
     this.isEditMode = false;
     this.showForm = true;
-    this.serviceForm.reset({ isActive: true, price: 0 });
-    this.imagePreview = null;
-    this.selectedImage = null;
-  }
-
-  onEdit(service: Service): void {
-    this.isEditMode = true;
-    this.showForm = true;
-    this.currentServiceId = service.id!;
-    this.serviceForm.patchValue(service);
     this.imagePreview = service.imageUrl || null;
   }
 
@@ -139,10 +121,6 @@ export class ServicesComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.showForm = false;
-    this.serviceForm.reset();
-    this.imagePreview = null;
-    this.selectedImage = null;
     this.currentServiceId = null;
   }
 

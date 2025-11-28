@@ -22,10 +22,6 @@
   },
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 83da4c2 (chore: update Angular dependencies to latest versions and refactor services component)
     "@angular/animations": "20.3.11",
     "@angular/common": "20.3.11",
     "@angular/compiler": "20.3.11",
@@ -39,8 +35,6 @@
     "@angular/material": "20.2.11",
     "@angular/fire": "20.0.1",
 
-<<<<<<< HEAD
-=======
     "@angular/animations": "^20.3.9",
     "@angular/cdk": "^20.2.11",
     "@angular/common": "^20.2.0",
@@ -51,9 +45,7 @@
     "@angular/material": "^20.2.11",
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
->>>>>>> 6699d536e6d86b470928cd8fec0d77a33a592082
-=======
->>>>>>> 83da4c2 (chore: update Angular dependencies to latest versions and refactor services component)
+
     "bootstrap-icons": "^1.13.1",
     "firebase": "^12.5.0",
     "rxjs": "~7.8.0",
@@ -61,9 +53,9 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "20.3.10",
-    "@angular/cli": "20.3.10",
-    "@angular/compiler-cli": "20.3.11",
+    "@angular/build": "^20.2.2",
+    "@angular/cli": "^20.2.2",
+    "@angular/compiler-cli": "^20.2.0",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
