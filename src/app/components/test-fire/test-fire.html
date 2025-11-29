@@ -1,0 +1,28 @@
+ <div class="container">
+      <h2> اختبار Firebase Realtime Database</h2>
+      
+      <div class="input-section">
+        <input 
+          [(ngModel)]="newMessage" 
+          placeholder="اكتب رسالة..."
+          (keyup.enter)="addMessage()"
+          class="message-input">
+        <button (click)="addMessage()" class="send-btn" [disabled]="!newMessage.trim()">
+          إرسال
+        </button>
+      </div>
+
+      <div class="messages-section">
+        <h3>الرسائل المباشرة:</h3>
+        <div *ngIf="(messages$ | async)?.length === 0" class="no-messages">
+          لا توجد رسائل بعد 
+        </div>
+        <div *ngFor="let message of messages$ | async" class="message-card">
+          <p class="message-text">{{ message.text }}</p>
+          <div class="message-footer">
+            <small class="message-date">{{ message.createdAt | date:'dd/MM/yyyy - hh:mm a' }}</small>
+            <button (click)="deleteMessage(message.id)" class="delete-btn">🗑️ حذف</button>
+          </div>
+        </div>
+      </div>
+    </div>

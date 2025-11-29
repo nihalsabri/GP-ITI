@@ -1,37 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-export interface Service {
-  id?: number;
-  name: string;
-  description: string;
-  category: string;
-  price: number;
-  imageUrl?: string;
-  isActive: boolean;
-  createdAt?: Date;
-}
+import { DataService } from '../../services/data';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './services.html',
-  styleUrls: ['./services.css'],
+  styleUrls: ['./services.css']
 })
 export class ServicesComponent implements OnInit {
-  services: Service[] = [];
-  filteredServices: Service[] = [];
+  services$!: Observable<any[]>;
+  filteredServices$!: Observable<any[]>;
+  searchTerm = '';
 
   serviceForm: FormGroup;
-  isEditMode = false;
   showForm = false;
+  isEditMode = false;
   selectedImage: File | null = null;
   imagePreview: string | null = null;
-  currentServiceId: number | null = null;
+  editingId: string | null = null;
   loading = false;
 
   categories = [
@@ -44,205 +34,175 @@ export class ServicesComponent implements OnInit {
     'صيانة عامة',
     'كهربائيات',
     'دهانات',
-    'تنظيف',
+    'تنظيف'
   ];
 
-  private apiUrl = 'http://localhost:3000/api/services';
-
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private dataService: DataService
+  ) {
     this.serviceForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       category: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
-      isActive: [true],
+      imageUrl: [''],
+      isActive: [true]
     });
   }
 
   ngOnInit(): void {
-    this.loadServices();
+    console.log('🚀 ServiceComponent initialized');
+    this.loadData();
   }
 
-  loadServices(): void {
-    this.loading = true;
-    this.http.get<Service[]>(this.apiUrl).subscribe({
-      next: (services) => {
-        this.services = services;
-        this.filteredServices = services;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading services:', error);
-        this.services = this.getDummyData();
-        this.filteredServices = this.services;
-        this.loading = false;
-      },
+  loadData(): void {
+    console.log('📥 Loading data from Firebase: services');
+    this.services$ = this.dataService.getData('services');
+    this.filteredServices$ = this.services$;
+
+    // للتشخيص: اطبع البيانات
+    this.services$.subscribe(data => {
+      console.log('✅ Data received from Firebase:', data);
+      console.log('📊 Number of services:', data.length);
     });
   }
 
-  getDummyData(): Service[] {
-    return [
-      {
-        id: 1,
-        name: 'سباكة منزلية',
-        description:
-          'خدمات سباكة شاملة للمنازل والشقق تشمل إصلاح التسريبات وتركيب المواسير',
-        category: 'سباكة',
-        price: 150,
-        isActive: true,
-        imageUrl: 'https://via.placeholder.com/60/4299e1/ffffff?text=سباكة',
-      },
-      {
-        id: 2,
-        name: 'نجارة وتركيبات',
-        description: 'تركيب وصيانة جميع أعمال النجارة من أبواب وشبابيك وخزائن',
-        category: 'نجارة',
-        price: 200,
-        isActive: true,
-        imageUrl: 'https://via.placeholder.com/60/f59e0b/ffffff?text=نجارة',
-      },
-      {
-        id: 3,
-        name: 'صيانة كهرباء',
-        description: 'صيانة وإصلاح جميع الأعطال الكهربائية وتركيب الإضاءة',
-        category: 'كهرباء',
-        price: 180,
-        isActive: true,
-        imageUrl: 'https://via.placeholder.com/60/10b981/ffffff?text=كهرباء',
-      },
-      {
-        id: 4,
-        name: 'دهانات ونقاشة',
-        description: 'أعمال الدهانات والديكورات بجميع أنواعها',
-        category: 'نقاشة',
-        price: 250,
-        isActive: false,
-        imageUrl: 'https://via.placeholder.com/60/8b5cf6/ffffff?text=دهانات',
-      },
-    ];
+  filterData(): void {
+    if (!this.searchTerm.trim()) {
+      this.filteredServices$ = this.services$;
+      return;
+    }
+
+    this.filteredServices$ = new Observable(observer => {
+      this.services$.subscribe(data => {
+        const filtered = data.filter(service =>
+          service.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          service.category.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          service.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+        observer.next(filtered);
+      });
+    });
   }
 
   onAddNew(): void {
+    console.log('➕ Opening add new form');
     this.isEditMode = false;
     this.showForm = true;
-    this.serviceForm.reset({ isActive: true, price: 0 });
+    this.editingId = null;
+    this.serviceForm.reset({ isActive: true, price: 0, imageUrl: '' });
     this.imagePreview = null;
     this.selectedImage = null;
   }
 
-  onEdit(service: Service): void {
+  onEdit(service: any): void {
+    console.log('✏️ Editing service:', service);
     this.isEditMode = true;
     this.showForm = true;
-    this.currentServiceId = service.id!;
-    this.serviceForm.patchValue(service);
+    this.editingId = service.id;
+    this.serviceForm.patchValue({
+      name: service.name,
+      description: service.description,
+      category: service.category,
+      price: service.price,
+      imageUrl: service.imageUrl || '',
+      isActive: service.isActive
+    });
     this.imagePreview = service.imageUrl || null;
   }
 
-  onDelete(service: Service): void {
+  onDelete(service: any): void {
+    console.log('🗑️ Attempting to delete service:', service);
     if (confirm(`هل أنت متأكد من حذف الخدمة "${service.name}"؟`)) {
-      this.http.delete(`${this.apiUrl}/${service.id}`).subscribe({
-        next: () => {
-          this.loadServices();
+      this.loading = true;
+      console.log('🔥 Deleting from Firebase path: services/' + service.id);
+
+      this.dataService.deleteData('services', service.id)
+        .then(() => {
+          console.log('✅ Delete successful');
           alert('تم حذف الخدمة بنجاح ✅');
-        },
-        error: (error) => {
-          console.error('Error deleting service:', error);
-          this.services = this.services.filter((s) => s.id !== service.id);
-          this.filteredServices = this.services;
-          alert('تم حذف الخدمة بنجاح ✅');
-        },
-      });
+          this.loading = false;
+        })
+        .catch(error => {
+          console.error('❌ Delete failed:', error);
+          alert('حدث خطأ أثناء حذف الخدمة ❌');
+          this.loading = false;
+        });
     }
   }
 
   onImageSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      console.log('📷 Image selected:', file.name, file.size, 'bytes');
       this.selectedImage = file;
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imagePreview = e.target.result;
+        this.serviceForm.patchValue({ imageUrl: e.target.result });
+        console.log('✅ Image converted to Base64');
       };
       reader.readAsDataURL(file);
     }
   }
 
-  onSubmit(): void {
+  saveData(): void {
+    console.log('💾 Attempting to save data');
+    console.log('📝 Form valid:', this.serviceForm.valid);
+    console.log('📋 Form data:', this.serviceForm.value);
+
     if (this.serviceForm.invalid) {
       this.serviceForm.markAllAsTouched();
+      console.warn('⚠️ Form is invalid');
+      alert('يرجى ملء جميع الحقول المطلوبة ⚠️');
       return;
     }
 
+    console.log('Submitting form...', this.serviceForm.value);
     this.loading = true;
-    const serviceData: Service = this.serviceForm.value;
+    const serviceData = this.serviceForm.value;
+    console.log('📦 Service data to save:', serviceData);
 
-    if (this.selectedImage) {
-      this.uploadImage(this.selectedImage).subscribe({
-        next: (response) => {
-          serviceData.imageUrl = response.imageUrl;
-          this.saveService(serviceData);
-        },
-        error: (error) => {
-          console.error('Error uploading image:', error);
-          this.saveService(serviceData);
-        },
-      });
+    if (this.isEditMode && this.editingId) {
+      console.log('🔄 Updating existing service, ID:', this.editingId);
+      this.dataService.updateData('services', this.editingId, serviceData)
+        .then(() => {
+          console.log('✅ Update successful');
+          alert('تم تحديث الخدمة بنجاح ✅');
+          this.closeModal();
+          this.loading = false;
+        })
+        .catch(error => {
+          console.error('❌ Update failed:', error);
+          alert('حدث خطأ أثناء تحديث الخدمة ❌');
+          this.loading = false;
+        });
     } else {
-      if (this.isEditMode && this.imagePreview) {
-        serviceData.imageUrl = this.imagePreview;
-      }
-      this.saveService(serviceData);
+      console.log('➕ Adding new service to path: services');
+      this.dataService.addData('services', serviceData)
+        .then((id) => {
+          console.log('✅ Add successful, new ID:', id);
+          alert('تم إضافة الخدمة بنجاح ✅');
+          this.closeModal();
+          this.loading = false;
+        })
+        .catch(error => {
+          console.error('❌ Add failed:', error);
+          console.error('Error details:', JSON.stringify(error));
+          alert('حدث خطأ أثناء إضافة الخدمة ❌');
+          this.loading = false;
+        });
     }
-  }
 
-  uploadImage(file: File): Observable<{ imageUrl: string }> {
-    const formData = new FormData();
-    formData.append('image', file);
-    return this.http.post<{ imageUrl: string }>(`${this.apiUrl}/upload`, formData);
-  }
-
-  private saveService(serviceData: Service): void {
-    const request = this.isEditMode
-      ? this.http.put<Service>(`${this.apiUrl}/${this.currentServiceId}`, serviceData)
-      : this.http.post<Service>(this.apiUrl, serviceData);
-
-    request.subscribe({
-      next: () => {
-        this.loadServices();
-        this.onCancel();
-        alert(this.isEditMode ? 'تم تحديث الخدمة بنجاح ✅' : 'تم إضافة الخدمة بنجاح ✅');
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error saving service:', error);
-        if (!this.isEditMode) {
-          const newService = { ...serviceData, id: Date.now() };
-          this.services.push(newService);
-          this.filteredServices = this.services;
-        }
-        this.onCancel();
-        alert(this.isEditMode ? 'تم تحديث الخدمة بنجاح ✅' : 'تم إضافة الخدمة بنجاح ✅');
-        this.loading = false;
-      },
-    });
-  }
-
-  onCancel(): void {
+  closeModal(): void {
+    console.log('🚪 Closing modal');
     this.showForm = false;
-    this.serviceForm.reset();
+    this.isEditMode = false;
+    this.editingId = null;
+    this.serviceForm.reset({ isActive: true, price: 0, imageUrl: '' });
     this.imagePreview = null;
     this.selectedImage = null;
-    this.currentServiceId = null;
-  }
-
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-    this.filteredServices = this.services.filter(
-      (service) =>
-        service.name.toLowerCase().includes(filterValue) ||
-        service.category.toLowerCase().includes(filterValue) ||
-        service.description.toLowerCase().includes(filterValue)
-    );
   }
 
   getError(field: string): string {
@@ -251,11 +211,25 @@ export class ServicesComponent implements OnInit {
       return 'هذا الحقل مطلوب';
     }
     if (control?.hasError('minlength')) {
-      return `يجب أن يكون ${control.errors?.['minlength'].requiredLength} أحرف على الأقل`;
+      const requiredLength = control.errors?.['minlength'].requiredLength;
+      return `يجب أن يكون ${requiredLength} أحرف على الأقل`;
     }
     if (control?.hasError('min')) {
       return 'يجب أن يكون الرقم أكبر من أو يساوي صفر';
     }
     return '';
+  }
+
+  onSubmit(): void {
+    this.saveData();
+  }
+
+  onCancel(): void {
+    this.closeModal();
+  }
+
+  applyFilter(event: Event): void {
+    this.searchTerm = (event.target as HTMLInputElement).value;
+    this.filterData();
   }
 }
