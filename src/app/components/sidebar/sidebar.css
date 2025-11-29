@@ -1,18 +1,169 @@
+/* ====== Sidebar Styling ====== */
 .sidebar {
-  min-height: 100vh;
-  position: sticky;
+  background: linear-gradient(135deg, #DBA979 0%, #C89968 100%);
+  height: 100vh;
+  width: 250px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  left: 0;
   top: 0;
+  overflow-y: auto;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+  padding: 15px 8px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* ====== Header Section ====== */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 15px;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-header {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.dashboard-title {
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.dashboard-title.hidden {
+  display: none;
+}
+
+/* ====== Toggle Button ====== */
+.btn-toggle {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  position: relative;
+}
+
+.sidebar.collapsed .btn-toggle {
+  position: static;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 auto 10px;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.btn-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.sidebar.collapsed .btn-toggle:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.08);
+}
+
+.btn-toggle:active {
+  transform: scale(0.95);
+}
+
+.toggle-icon {
+  display: inline-block;
+  font-size: 20px;
+}
+
+/* ====== Open Button (Collapse State) ====== */
+.btn-open-sidebar {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 12px;
+  width: 44px;
+  height: 44px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto;
+  font-weight: bold;
+}
+
+.btn-open-sidebar:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
+}
+
+.btn-open-sidebar:active {
+  transform: scale(0.95);
+}
+
+.open-icon {
+  display: inline-block;
+}
+
+/* ====== Navigation Menu ====== */
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: opacity 0.3s ease;
+}
+
+.nav-menu.hidden {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .nav-link {
-  border-radius: 8px;
-  transition: all 0.2s;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.sidebar.collapsed .nav-link {
+  display: none;
 }
 
 .nav-link:hover {
-  background-color: rgba(142, 142, 142, 0.515);
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px);
 }
 
 .nav-link.active {
@@ -21,6 +172,50 @@
   font-weight: 500;
 }
 
-.nav-link i {
-  font-size: 1.1rem;
+.sidebar.collapsed .label {
+  display: none;
+}
+
+/* ====== Scrollbar Styling ====== */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60px;
+    padding: 10px 5px;
+  }
+
+  .sidebar.collapsed {
+    width: 60px;
+    padding: 10px 5px;
+  }
+
+  .sidebar-header {
+    margin-bottom: 15px;
+  }
+
+  .nav-link {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .icon {
+    font-size: 16px;
+  }
 }

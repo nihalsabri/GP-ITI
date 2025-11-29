@@ -1,0 +1,217 @@
+/* ====== الصفحة الأساسية للطلبات ====== */
+.orders-page {
+  background: #E8EFCF;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Cairo", sans-serif;
+  direction: rtl;
+}
+
+.page-title {
+  text-align: center;
+  color: #DBA979;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.actions {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.btn-add {
+  background-color: #AFD198;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-add:hover {
+  background-color: #ECCA9C;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.orders-table th {
+  background-color: #DBA979;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.orders-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ECCA9C;
+  text-align: center;
+  color: #333;
+}
+
+.orders-table tr:hover {
+  background-color: #E8EFCF;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status.جديدة {
+  color: #DBA979;
+}
+
+.status.مكتملة {
+  color: #AFD198;
+}
+
+.status.قيد-التنفيذ {
+  color: #ECCA9C;
+}
+
+.btn-edit, .btn-delete {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-edit {
+  background-color: #ECCA9C;
+  color: #333;
+}
+
+.btn-edit:hover {
+  background-color: #DBA979;
+  color: #fff;
+}
+
+.btn-delete {
+  background-color: #DBA979;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #AFD198;
+  color: #333;
+}
+
+/* ====== Modal Styling ====== */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: #fff;
+  padding: 25px;
+  border-radius: 14px;
+  width: 380px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.modal.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+.overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #DBA979;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal label {
+  font-weight: 600;
+  color: #333;
+}
+
+.modal input,
+.modal select {
+  padding: 8px;
+  border: 1px solid #ECCA9C;
+  border-radius: 6px;
+  outline: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 25px;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 10px;
+  display: none;
+  z-index: 1001;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.modal.show {
+  display: block;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  z-index: 1000;
+}
+
+.overlay.show {
+  display: block;
+}
+
+.modal-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}

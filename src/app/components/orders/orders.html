@@ -1,1 +1,73 @@
-<p>orders works!</p>
+<!-- src/app/components/orders/order.component.html -->
+<div class="orders-page">
+  <h2 class="page-title">الطلبات</h2>
+
+  <div class="actions">
+    <button class="btn-add" (click)="openModal(); $event.stopPropagation()">أضف أوردر جديد</button>
+  </div>
+
+  <table class="orders-table">
+    <thead>
+      <tr>
+        <th>رقم الأوردر</th>
+        <th>العميل</th>
+        <th>الفني</th>
+        <th>الخدمة</th>
+        <th>الحالة</th>
+        <th>التاريخ</th>
+        <th>إجراءات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.id }}</td>
+        <td>{{ getClientName(order.clientId) }}</td>
+        <td>{{ getTradespersonName(order.tradespersonId) }}</td>
+        <td>{{ order.serviceType }}</td>
+        <td class="status {{ order.status }}">{{ order.status }}</td>
+        <td>{{ order.date }}</td>
+        <td>
+          <button class="btn-edit" (click)="openModal(order); $event.stopPropagation()">تعديل</button>
+          <button class="btn-delete" (click)="deleteOrder(order.id)">حذف</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="overlay" [class.show]="isModalOpen" (click)="onOverlayClick($event)"></div>
+
+<div class="modal" [class.show]="isModalOpen" (click)="$event.stopPropagation()">
+  <h3>{{ isEditMode ? 'تعديل الأوردر' : 'إضافة أوردر جديد' }}</h3>
+  <form #orderForm="ngForm" (ngSubmit)="saveOrder(orderForm)">
+    <label>العميل:</label>
+    <select [(ngModel)]="newOrder.clientId" name="clientId" required>
+      <option [ngValue]="0">اختر العميل</option>
+      <option *ngFor="let c of clients" [ngValue]="c.id">{{ c.name }}</option>
+    </select>
+
+    <label>الفني:</label>
+    <select [(ngModel)]="newOrder.tradespersonId" name="tradespersonId" required>
+      <option [ngValue]="0">اختر الفني</option>
+      <option *ngFor="let t of tradespeople" [ngValue]="t.id">{{ t.name }} - {{ t.job }}</option>
+    </select>
+
+    <label>نوع الخدمة:</label>
+    <input type="text" [(ngModel)]="newOrder.serviceType" name="serviceType" required />
+
+    <label>الحالة:</label>
+    <select [(ngModel)]="newOrder.status" name="status" required>
+      <option value="جديدة">جديدة</option>
+      <option value="مكتملة">مكتملة</option>
+      <option value="ملغاة">ملغاة</option>
+    </select>
+
+    <label>التاريخ:</label>
+    <input type="date" [(ngModel)]="newOrder.date" name="date" required />
+
+    <div class="modal-actions">
+      <button type="submit">{{ isEditMode ? 'تحديث' : 'إضافة' }}</button>
+      <button type="button" (click)="closeModal()">إلغاء</button>
+    </div>
+  </form>
+</div>

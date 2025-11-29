@@ -1,3 +1,7 @@
+
+
+
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 // import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 // import { provideRouter } from '@angular/router';
 // import { routes } from './app.routes';
@@ -33,6 +37,12 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
 import { App } from './app';
 import { routes } from './app.routes';
+import { provideHttpClient } from '@angular/common/http';
+
+import { initializeApp } from "firebase/app";
+import { environment } from '../environments/environment';
+
+initializeApp(environment.firebase);
 
 bootstrapApplication(App, {
   providers: [
