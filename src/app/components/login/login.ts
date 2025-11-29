@@ -88,7 +88,7 @@ export class Login {
       }
 
       // navigate to dashboard (or root). The guard will allow or redirect as needed.
-      await this.router.navigate(['/']);
+      await this.router.navigate(['/dashboard']);
       console.log('[LoginComponent] navigation attempted to /');
     } catch (err: any) {
       console.error('[LoginComponent] Login error', err);

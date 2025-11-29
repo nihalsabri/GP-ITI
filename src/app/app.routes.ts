@@ -13,9 +13,9 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('../app/components/login/login').then((m) => m.Login),
   },
-
+{ path: '', redirectTo: 'login', pathMatch: 'full' },
   {
-    path: '',
+    path: 'dashboard',
     component: Layout,
     canActivate: [adminGuard], 
     children: [
