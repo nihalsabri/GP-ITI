@@ -194,7 +194,8 @@ export class ServicesComponent implements OnInit {
           this.loading = false;
         });
     }
-
+  }
+  
   closeModal(): void {
     console.log('🚪 Closing modal');
     this.showForm = false;
