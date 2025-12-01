@@ -1,53 +1,73 @@
-<div class="card">
-  <div class="card-header">
-    <div class="header-left">
-      <h3>Clients</h3>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <div class="page-title">
+        <h1>Clients </h1>
+        <img src="clients.png" width="40" height="40" alt="إعدادات" />
+      </div>
+      <p class="subtitle">Your comfort, your goals, our priority</p>
     </div>
-    <div class="header-right">
-      <input
-        type="text"
-        [(ngModel)]="searchTerm"
-        (input)="filterData()"
-        placeholder="Search clients..."
-      />
-      <button class="btn btn-primary" (click)="openAddModal()">+ Add Client</button>
+
+    <button class="btn-primary" (click)="openAddModal()">
+      <span class="icon">
+        <img src="add.png" width="25" height="25" alt="إضافة" />
+      </span>
+      <span>Add New Clients</span>
+    </button>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <div>
+      <span>
+        <img src="searchIcon.svg" alt="search" />
+      </span>
+      <input type="text" [(ngModel)]="searchTerm" (input)="filterData()" placeholder="Search clients..." />
     </div>
   </div>
 
-  <div class="card-body table-responsive">
-    <table class="table table-striped">
+  <!-- Table Container -->
+  <div class="table-container">
+    <table class="data-table">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Orders Count</th>
-          <th>Last Order</th>
-          <th>Created At</th>
-          <th>Actions</th>
+          <th><span>#</span></th>
+          <th><span>Name</span></th>
+          <th><span>Email</span></th>
+          <th><span>Phone</span></th>
+          <th><span>Orders Count</span></th>
+          <th><span>Last Order</span></th>
+          <th><span>Created At</span></th>
+          <th><span>Actions</span></th>
         </tr>
       </thead>
 
       <tbody>
         @for (c of filteredClients$ | async; track c.id; let i = $index) {
-        <tr>
+        <tr class="no-data-row">
           <td>{{ i + 1 }}</td>
           <td>{{ c.name }}</td>
           <td>{{ c.email }}</td>
           <td>{{ c.phone }}</td>
           <td>{{ c.orders?.length || 0 }}</td>
           <td>{{ getLastOrderDisplay(c.orders) || '-' }}</td>
-          <td>@if (c.createdAt) { {{ c.createdAt | date : 'dd/MM/yyyy, HH:mm' }} } @else { - }</td>
           <td>
-            <button class="btn btn-danger btn-sm" (click)="deleteClient(c.id, c.name)">
-              Delete
+            @if (c.createdAt) {
+            {{ c.createdAt | date : 'dd/MM/yyyy, HH:mm' }}
+            } @else {
+            -
+            }
+          </td>
+          <td>
+            <button class="btn-icon btn-delete" (click)="deleteClient(c.id, c.name)" title="Delete">
+              <img src="delete.png" width="30" height="40" alt="delete" />
             </button>
+
           </td>
         </tr>
         } @empty {
         <tr>
-          <!-- Note: The colspan here is 8 -->
           <td colspan="8" class="text-center">No clients yet</td>
         </tr>
         }
@@ -88,28 +108,30 @@
 
     <hr />
 
-    <div
-      style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px"
-    >
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px">
       <h5 style="margin: 0">Orders (optional)</h5>
-      <button class="btn btn-secondary btn-sm" (click)="addOrder()">+ Add Order</button>
+      <button class="btn btn-secondary btn-sm" (click)="addOrder()">
+        + Add Order
+      </button>
     </div>
 
     @for (order of formData.orders; track $index) {
     <div class="order-block">
+
       <div class="form-row">
         <label>Tradesperson</label>
-        <select
-          [(ngModel)]="order.tradespersonId"
-          (change)="onTradespersonSelect(order); clearOrderError($index, 'tradespersonId')"
-        >
+        <select [(ngModel)]="order.tradespersonId"
+          (change)="onTradespersonSelect(order); clearOrderError($index, 'tradespersonId')">
           <option value="">-- Select Tradesperson --</option>
+
           @for (t of tradespeopleList; track t.id) {
           <option [value]="t.id">
-            {{ t.name }} — {{ t.trade }} @if (t.phone) { ({{ t.phone }}) }
+            {{ t.name }} — {{ t.trade }}
+            @if (t.phone) { ({{ t.phone }}) }
           </option>
           }
         </select>
+
         @if (ordersErrors[$index]?.tradespersonId) {
         <div class="field-error">
           {{ ordersErrors[$index].tradespersonId }}
@@ -119,12 +141,8 @@
 
       <div class="form-row">
         <label>Service</label>
-        <input
-          type="text"
-          [(ngModel)]="order.service"
-          (input)="clearOrderError($index, 'service')"
-          placeholder="e.g. Pipe repair"
-        />
+        <input type="text" [(ngModel)]="order.service" (input)="clearOrderError($index, 'service')"
+          placeholder="e.g. Pipe repair" />
         @if (ordersErrors[$index]?.service) {
         <div class="field-error">
           {{ ordersErrors[$index].service }}
@@ -136,15 +154,17 @@
       <div class="order-meta">
         <div class="meta-row">
           <small><strong>Phone:</strong> {{ selectedTp.phone || '-' }}</small>
-          <small style="margin-left: 12px"
-            ><strong>Email:</strong> {{ selectedTp.email || '-' }}</small
-          >
+          <small style="margin-left: 12px">
+            <strong>Email:</strong> {{ selectedTp.email || '-' }}
+          </small>
         </div>
       </div>
       }
 
       <div style="display: flex; justify-content: flex-end; gap: 8px">
-        <button class="btn btn-danger btn-sm" (click)="removeOrder($index)">Remove</button>
+        <button class="btn btn-danger btn-sm" (click)="removeOrder($index)">
+          Remove
+        </button>
       </div>
     </div>
     } @empty {
@@ -162,12 +182,15 @@
 }
 
 <!-- Toast -->
-@switch (toastType) { @case ('success') { @if (toastVisible) {
-<div class="toast toast-success">
-  {{ toastMessage }}
-</div>
-} } @case ('error') { @if (toastVisible) {
-<div class="toast toast-error">
-  {{ toastMessage }}
-</div>
-} } }
+@switch (toastType) {
+@case ('success') {
+@if (toastVisible) {
+<div class="toast toast-success">{{ toastMessage }}</div>
+}
+}
+@case ('error') {
+@if (toastVisible) {
+<div class="toast toast-error">{{ toastMessage }}</div>
+}
+}
+}

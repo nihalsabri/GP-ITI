@@ -1,38 +1,53 @@
 <div class="container">
-  <!-- Header -->
+  <!-- Header  -->
   <div class="header">
-    <h1>⚙️ إدارة الخدمات</h1>
+    <div>
+      <div class="page-title">
+        <h1> إدارة الخدمات</h1>
+        <img src="settingIcon.svg" width="40" height="40" alt="إعدادات" />
+
+      </div>
+
+      <p style="color: #718096; margin-top: 8px; font-size: 0.95rem;">
+        إدارة شاملة لجميع الخدمات المتاحة
+      </p>
+    </div>
     <button class="btn-primary" (click)="onAddNew()" *ngIf="!showForm">
-      <span class="icon">+</span> إضافة خدمة جديدة
+      <span class="icon">
+        <img src="add.png" width="25" height="25" alt="إضافة" />
+      </span>
+      <span>إضافة خدمة جديدة</span>
     </button>
   </div>
 
-  <!-- Form Section -->
+  <!-- Form Section مع Animation -->
   <div class="form-container" *ngIf="showForm">
     <div class="form-header">
-      <h2>{{ isEditMode ? '✏️ تعديل الخدمة' : '➕ إضافة خدمة جديدة' }}</h2>
+      <h2>
+        <img [src]="isEditMode ? 'editIcon.svg' : 'add.png'" width="30" height="30" alt="icon" class="form-icon" />
+        {{ isEditMode ? 'تعديل الخدمة' : 'إضافة خدمة جديدة' }}
+      </h2>
     </div>
 
     <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
       <div class="form-grid">
         <!-- اسم الخدمة -->
         <div class="form-group">
-          <label>اسم الخدمة *</label>
-          <input
-            type="text"
-            formControlName="name"
-            placeholder="مثال: سباكة منزلية"
+          <label>
+            اسم الخدمة *
+          </label>
+          <input type="text" formControlName="name" placeholder="مثال: سباكة منزلية"
             [class.invalid]="serviceForm.get('name')?.invalid && serviceForm.get('name')?.touched">
           <span class="error" *ngIf="serviceForm.get('name')?.invalid && serviceForm.get('name')?.touched">
             {{ getError('name') }}
           </span>
         </div>
 
-        <!-- الفئة -->
         <div class="form-group">
-          <label>الفئة *</label>
-          <select
-            formControlName="category"
+          <label>
+            الفئة *
+          </label>
+          <select formControlName="category"
             [class.invalid]="serviceForm.get('category')?.invalid && serviceForm.get('category')?.touched">
             <option value="">اختر الفئة</option>
             <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
@@ -44,11 +59,10 @@
 
         <!-- السعر -->
         <div class="form-group">
-          <label>السعر (جنيه) *</label>
-          <input
-            type="number"
-            formControlName="price"
-            placeholder="0"
+          <label>
+            السعر (جنيه) *
+          </label>
+          <input type="number" formControlName="price" placeholder="0" min="0"
             [class.invalid]="serviceForm.get('price')?.invalid && serviceForm.get('price')?.touched">
           <span class="error" *ngIf="serviceForm.get('price')?.invalid && serviceForm.get('price')?.touched">
             {{ getError('price') }}
@@ -59,38 +73,44 @@
         <div class="form-group checkbox-group">
           <label>
             <input type="checkbox" formControlName="isActive">
-            <span>✅ الخدمة نشطة</span>
+            <img src="true.png" width="20" height="20" alt="active" />
+            الخدمة نشطة ومتاحة للعملاء
           </label>
         </div>
 
         <!-- الوصف -->
         <div class="form-group full-width">
-          <label>الوصف التفصيلي *</label>
-          <textarea
-            formControlName="description"
-            rows="4"
-            placeholder="اكتب وصفاً تفصيلياً للخدمة..."
+          <label>
+            الوصف التفصيلي *
+          </label>
+          <textarea formControlName="description" rows="4" placeholder="اكتب وصفاً تفصيلياً وشاملاً للخدمة..."
             [class.invalid]="serviceForm.get('description')?.invalid && serviceForm.get('description')?.touched"></textarea>
-          <span class="error" *ngIf="serviceForm.get('description')?.invalid && serviceForm.get('description')?.touched">
+          <span class="error"
+            *ngIf="serviceForm.get('description')?.invalid && serviceForm.get('description')?.touched">
             {{ getError('description') }}
           </span>
         </div>
 
         <!-- رفع الصورة -->
         <div class="form-group full-width">
-          <label>📷 صورة الخدمة (اختياري)</label>
+          <label>
+            <img src="camera.png" width="20" height="20" alt="camera" />
+            صورة الخدمة (اختياري)
+          </label>
           <div class="image-upload">
-            <input
-              type="file"
-              #fileInput
-              (change)="onImageSelected($event)"
-              accept="image/*"
-              style="display: none">
+            <input type="file" #fileInput (change)="onImageSelected($event)" accept="image/*" style="display: none">
             <button type="button" class="btn-upload" (click)="fileInput.click()">
-              اختر صورة 📁
+              <img src="folder.png" width="25" height="25" alt="folder" />
+              اختر صورة من جهازك
             </button>
             <div class="image-preview" *ngIf="imagePreview">
-              <img [src]="imagePreview" alt="Preview">
+              <img [src]="imagePreview" alt="معاينة الصورة">
+              <div class="image-overlay">
+                <button type="button" class="btn-remove-image"
+                  (click)="imagePreview = null; serviceForm.patchValue({imageUrl: ''})">
+                  <img src="falseIcon.svg" width="20" height="20" alt="remove" /> إزالة
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -99,11 +119,14 @@
       <!-- أزرار الحفظ والإلغاء -->
       <div class="form-actions">
         <button type="submit" class="btn-primary" [disabled]="loading || serviceForm.invalid">
-          <span *ngIf="!loading">{{ isEditMode ? '💾 تحديث' : '➕ إضافة' }}</span>
-          <span *ngIf="loading">⏳ جاري الحفظ...</span>
+          <img *ngIf="!loading" [src]="isEditMode ? 'save.png' : 'add.png'" width="25" height="25" alt="icon" />
+          {{ isEditMode ? 'تحديث الخدمة' : 'إضافة الخدمة' }}
+          <span *ngIf="loading">
+            > جاري الحفظ...
+          </span>
         </button>
         <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
-          ❌ إلغاء
+          <img src="falseIcon.svg" width="20" height="20" alt="cancel" /> إلغاء
         </button>
       </div>
     </form>
@@ -111,11 +134,13 @@
 
   <!-- Search Bar -->
   <div class="search-bar" *ngIf="!showForm">
-    <input
-      type="text"
-      placeholder="🔍 ابحث عن خدمة..."
-      [(ngModel)]="searchTerm"
-      (input)="applyFilter($event)">
+    <div>
+      <span>
+        <img src="searchIcon.svg" alt="search" />
+      </span>
+      <input type="text" placeholder="ابحث عن خدمة بالاسم أو الفئة أو الوصف..." [(ngModel)]="searchTerm"
+        (input)="applyFilter($event)" />
+    </div>
   </div>
 
   <!-- Table Section -->
@@ -123,70 +148,68 @@
     <!-- Loading Spinner -->
     <div class="loading" *ngIf="loading">
       <div class="spinner"></div>
-      <p>جاري التحميل...</p>
+      <p>جاري تحميل البيانات من Firebase...</p>
+      <small style="color: #a0aec0;">يرجى الانتظار</small>
     </div>
 
     <!-- الجدول -->
-    <table *ngIf="!loading && (filteredServices$ | async) as services">
-      <thead>
-        <tr>
-          <th>الصورة</th>
-          <th>اسم الخدمة</th>
-          <th>الفئة</th>
-          <th>السعر</th>
-          <th>الحالة</th>
-          <th>تاريخ الإضافة</th>
-          <th>الإجراءات</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let service of services" class="table-row">
-          <td>
-            <div class="service-image">
-              <img [src]="service.imageUrl || 'https://via.placeholder.com/60'" [alt]="service.name">
-            </div>
-          </td>
-          <td>
-            <div class="service-info">
-              <strong>{{ service.name }}</strong>
-              <p>{{ service.description | slice:0:80 }}{{ service.description.length > 80 ? '...' : '' }}</p>
-            </div>
-          </td>
-          <td>
-            <span class="category-badge">{{ service.category }}</span>
-          </td>
-          <td>
-            <span class="price">{{ service.price }} جنيه</span>
-          </td>
-          <td>
-            <span class="status" [class.active]="service.isActive" [class.inactive]="!service.isActive">
-              {{ service.isActive ? '✅ نشط' : '⛔ غير نشط' }}
-            </span>
-          </td>
-          <td>
-            <span class="date">{{ service.createdAt | date:'dd/MM/yyyy' }}</span>
-          </td>
-          <td>
-            <div class="actions">
-              <button class="btn-icon btn-edit" (click)="onEdit(service)" title="تعديل">
-                ✏️
-              </button>
-              <button class="btn-icon btn-delete" (click)="onDelete(service)" title="حذف">
-                🗑️
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div *ngIf="!loading">
+      <table *ngIf="(filteredServices$ | async) as services">
+        <thead>
+          <tr>
+            <th>الصورة</th>
+            <th>اسم الخدمة</th>
+            <th>الفئة</th>
+            <th>السعر</th>
+            <th>الحالة</th>
+            <th>تاريخ الإضافة</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let service of services; let i = index" [style.animation-delay]="i * 0.05 + 's'">
+            <td>
+              <img [src]="service.imageUrl || 'https://via.placeholder.com/60'" [alt]="service.name" width="60"
+                height="60" />
+            </td>
+            <td>{{ service.name }}</td>
+            <td>{{ service.category }}</td>
+            <td>{{ service.price }} جنيه</td>
+            <td>
+              <img *ngIf="service.isActive" src="true.png" width="20" height="20" alt="active" />
+              <span *ngIf="service.isActive">نشط</span>
 
-    <!-- No Data Message -->
-    <div class="no-data" *ngIf="!loading && (filteredServices$ | async)?.length === 0">
-      <div class="no-data-icon">📭</div>
-      <p>لا توجد خدمات مسجلة</p>
-      <button class="btn-primary" (click)="onAddNew()">
-        إضافة خدمة جديدة
-      </button>
+              <img *ngIf="!service.isActive" src="falseIcon.svg" width="20" height="20" alt="inactive" />
+              <span *ngIf="!service.isActive">غير نشط</span>
+            </td>
+
+            <td>{{ service.createdAt | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <div class="actions">
+                <button class="btn-icon btn-edit" (click)="onEdit(service)" title="تعديل الخدمة">
+                  <img src="editIcon.svg" width="30" height="40" alt="edit" />
+                </button>
+                <button class="btn-icon btn-delete" (click)="onDelete(service)" title="حذف الخدمة">
+                  <img src="delete.png" width="30" height="40" alt="delete" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- No Data Message -->
+      <div class="no-data" *ngIf="(filteredServices$ | async)?.length === 0">
+        <img src="noData.png" width="80" height="80" alt="no data" />
+        <h3>لا توجد خدمات</h3>
+        <p>{{ searchTerm ? 'لم يتم العثور على نتائج للبحث' : 'ابدأ بإضافة خدمة جديدة الآن' }}</p>
+        <button class="btn-primary" (click)="onAddNew()" *ngIf="!searchTerm">
+          <img src="add.png" width="20" height="20" alt="add" /> إضافة أول خدمة
+        </button>
+        <button class="btn-secondary" (click)="searchTerm = ''; filterData()" *ngIf="searchTerm">
+          <img src="falseIcon.svg" width="20" height="20" alt="reset" /> إعادة تعيين البحث
+        </button>
+      </div>
     </div>
   </div>
 </div>

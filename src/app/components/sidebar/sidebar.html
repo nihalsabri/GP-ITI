@@ -1,33 +1,67 @@
-<div class="sidebar" [class.collapsed]="isCollapsed">
-
+<div class="sidebar">
+  <!-- Logo & Brand -->
   <div class="sidebar-header">
-    <button class="btn-toggle" (click)="toggleSidebar()" title="Toggle Sidebar">
-      <span class="toggle-icon">{{ isCollapsed ? '→' : '←' }}</span>
-    </button>
-    <h4 class="dashboard-title" [class.hidden]="isCollapsed">Dashboard</h4>
+    <div class="brand-logo">
+      <span class="logo-icon"><img src="services.png" width="30" height="30"/></span>
+      <div class="brand-text">
+        <h3>Services Platform</h3>
+        <p>Dashboard</p>
+      </div>
+    </div>
   </div>
 
-  <nav class="nav-menu" [class.hidden]="isCollapsed">
-    <a routerLink="orders" routerLinkActive="active" class="nav-link">
-      <span class="icon"></span>
-      <span class="label">Orders</span>
+  <!-- Navigation Menu -->
+  <nav class="sidebar-nav">
+
+
+    <a routerLink="services"
+       routerLinkActive="active"
+       class="nav-item"
+       title="Services Management">
+      <span class="nav-icon"><img src="settingIcon.svg" width="30" height="30"/></span>
+      <span class="nav-text">Services</span>
+      <span class="nav-indicator"></span>
     </a>
-    <a routerLink="clients" routerLinkActive="active" class="nav-link">
-      <span class="icon"></span>
-      <span class="label">Clients</span>
+
+    <a routerLink="tradespeople"
+       routerLinkActive="active"
+       class="nav-item"
+       title="Tradespeople Management">
+      <span class="nav-icon"><img src="factor.png" width="30" height="30"/></span>
+      <span class="nav-text">Tradespeople</span>
+      <span class="nav-indicator"></span>
     </a>
-    <a routerLink="services" routerLinkActive="active" class="nav-link">
-      <span class="icon"></span>
-      <span class="label">Services</span>
+
+    <a routerLink="clients"
+       routerLinkActive="active"
+       class="nav-item"
+       title="Clients Management">
+      <span class="nav-icon"><img src="clients.png" width="30" height="30"/></span>
+      <span class="nav-text">Clients</span>
+      <span class="nav-indicator"></span>
     </a>
-    <a routerLink="tradespeople" routerLinkActive="active" class="nav-link">
-      <span class="icon"></span>
-      <span class="label">Tradespeople</span>
+
+    <a routerLink="orders"
+       routerLinkActive="active"
+       class="nav-item"
+       title="Orders Management">
+      <span class="nav-icon"><img src="order.png" width="30" height="30"/></span>
+      <span class="nav-text">Orders</span>
+      <span class="nav-indicator"></span>
     </a>
   </nav>
 
-  <button class="btn-open-sidebar" *ngIf="isCollapsed" (click)="toggleSidebar()" title="Open Sidebar">
-    <span class="open-icon">☰</span>
-  </button>
+  <!-- Sidebar Footer -->
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar">
+        <span><img src="admin.png" width="30" height="30"/></span>
+      </div>
+      <div class="user-details">
+        <h5>Admin</h5>
+      </div>
+    </div>
 
+
+  </div>
 </div>
