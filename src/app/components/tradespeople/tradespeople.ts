@@ -10,6 +10,7 @@ interface Tradesperson {
   trade: string;
   phone: string;
   email?: string;
+  imageUrl?: string;
   experience?: number;
   rating?: number;
   createdAt: string;
@@ -29,6 +30,10 @@ export class Tradespeople implements OnInit {
   filteredTradespeople$!: Observable<Tradesperson[]>;
   searchTerm = '';
   
+
+  selectedImage: File | null = null;
+  imagePreview: string | null = null;
+
   showAddModal = false;
   showEditModal = false;
   
@@ -37,6 +42,7 @@ export class Tradespeople implements OnInit {
     trade: '',
     phone: '',
     email: '',
+    imageUrl: [''],
     experience: null,
     rating: null
   };
@@ -129,6 +135,7 @@ export class Tradespeople implements OnInit {
       trade: '',
       phone: '',
       email: '',
+      imageUrl: [''],
       experience: null,
       rating: null
     };
