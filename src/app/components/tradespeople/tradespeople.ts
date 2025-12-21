@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data';
 import { Observable } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+
 
 interface Tradesperson {
   id: string;
@@ -18,20 +20,20 @@ interface Tradesperson {
 @Component({
   selector: 'app-tradespeople',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,MatIconModule],
  templateUrl: `./tradespeople.html`,
   styleUrl: './tradespeople.css'
 })
 export class Tradespeople implements OnInit {
-    // $ is a convention to indicate an Observable 
+    // $ is a convention to indicate an Observable
     //observable stream of Tradesperson array
   tradespeople$!: Observable<Tradesperson[]>;
   filteredTradespeople$!: Observable<Tradesperson[]>;
   searchTerm = '';
-  
+
   showAddModal = false;
   showEditModal = false;
-  
+
   formData: any = {
     name: '',
     trade: '',
@@ -40,7 +42,7 @@ export class Tradespeople implements OnInit {
     experience: null,
     rating: null
   };
-  
+
   editingId: string | null = null;
 
   constructor(private dataService: DataService) {}
@@ -63,7 +65,7 @@ export class Tradespeople implements OnInit {
 
     this.filteredTradespeople$ = new Observable(observer => {
       this.tradespeople$.subscribe(data => {
-        const filtered = data.filter(person => 
+        const filtered = data.filter(person =>
           person.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
           person.trade.toLowerCase().includes(this.searchTerm.toLowerCase())
         );

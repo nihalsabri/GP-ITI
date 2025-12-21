@@ -3,11 +3,13 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } 
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data';
 import { Observable } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule,MatIconModule],
   templateUrl: './services.html',
   styleUrls: ['./services.css']
 })
@@ -195,7 +197,7 @@ export class ServicesComponent implements OnInit {
         });
     }
   }
-  
+
   closeModal(): void {
     console.log('🚪 Closing modal');
     this.showForm = false;

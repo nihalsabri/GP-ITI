@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { DataService } from '../../services/data';
+import { MatIconModule } from '@angular/material/icon';
+
 
 interface Client {
   id: number;
@@ -30,7 +32,7 @@ interface OrderData {
   templateUrl: './orders.html',
   styleUrls: ['./orders.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule,MatIconModule]
 })
 export class OrdersComponent implements OnInit {
   orders: OrderData[] = [];

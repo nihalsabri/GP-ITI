@@ -243,6 +243,8 @@ import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataService } from '../../services/data';
+import { MatIconModule } from '@angular/material/icon';
+
 
 interface Tradesperson {
   id: string;
@@ -274,7 +276,7 @@ interface Client {
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './clients.html',
   styleUrls: ['./clients.css'],
 })

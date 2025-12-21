@@ -70,7 +70,7 @@
   color: #2d3748;
   font-size: 2.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #372B70;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -94,7 +94,7 @@
 }
 
 .btn-add {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #372B70;
   color: white;
   border: none;
   padding: 16px 40px;
@@ -159,7 +159,7 @@
 
 /* ========== Table Header ========== */
 .orders-table thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #372B70;
   color: white;
   position: relative;
 }

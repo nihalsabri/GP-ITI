@@ -1,7 +1,7 @@
 <div class="orders-page">
   <!-- Header Section -->
   <div class="orders-header">
-    
+
     <div class="header">
       <h2 class="page-title">الطلبات</h2>
       <img src="order.png" width="40" height="40" alt="orders icon" />
@@ -40,10 +40,10 @@
         <td data-label="التاريخ">{{ order.date }}</td>
         <td data-label="إجراءات">
           <button class="btn-edit" (click)="openModal(order); $event.stopPropagation()">
-            <img src="editIcon.svg" width="30" height="40" alt="edit" />
+               <mat-icon>edit</mat-icon>
           </button>
           <button class="btn-delete" (click)="deleteOrder(order.id)">
-            <img src="delete.png" width="30" height="40" alt="delete" />
+            <mat-icon>delete</mat-icon>
           </button>
         </td>
       </tr>
