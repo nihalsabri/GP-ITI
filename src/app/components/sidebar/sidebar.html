@@ -4,7 +4,10 @@
     <button class="btn-toggle" (click)="toggleSidebar()" title="Toggle Sidebar">
       <span class="toggle-icon">{{ isCollapsed ? '→' : '←' }}</span>
     </button>
-    <h4 class="dashboard-title" [class.hidden]="isCollapsed">Dashboard</h4>
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          <h4 class="dashboard-title" [class.hidden]="isCollapsed">Dashboard</h4>
+
+    </a>
   </div>
 
   <nav class="nav-menu" [class.hidden]="isCollapsed">
