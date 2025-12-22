@@ -4,6 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { DataService } from '../../services/data';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MatIconModule } from '@angular/material/icon';
 
 interface Client {
   id: string;
