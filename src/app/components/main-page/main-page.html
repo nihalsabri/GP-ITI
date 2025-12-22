@@ -1,1 +1,71 @@
-<p>main-page works!</p>
+<div class="dashboard-container">
+
+  <div class="stats-grid">
+      <div class="stat-card orange">
+      <h3>العملاء</h3>
+      <div class="value">{{ totalClients }}</div>
+    </div>   
+    <div class="stat-card">
+        <h3>الفنيين</h3>
+      <div class="value">{{ totalTradespeople }}</div>
+    </div>
+       <div class="stat-card purple">
+      <h3> الطلبات</h3>
+      <div class="value">{{ totalOrders }}</div>
+    </div>
+ 
+    <div class="stat-card green">
+      <h3>الخدمات </h3>
+      <div class="value">{{ activeServices }} </div>
+    </div>
+
+ 
+  </div>
+
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <apx-chart
+        [series]="donutOptions.series"
+        [labels]="donutOptions.labels"
+        [colors]="donutOptions.colors"
+        [chart]="donutOptions.chart"
+        [responsive]="donutOptions.responsive"
+        [title]="donutOptions.title">
+      </apx-chart>
+    </div>
+
+    <div class="chart-card">
+      <apx-chart
+        [series]="barOptions.series"
+        [xaxis]="barOptions.xaxis"
+        [colors]="barOptions.colors"
+        [chart]="barOptions.chart"
+        [title]="barOptions.title">
+      </apx-chart>
+    </div>
+
+    <div class="chart-card">
+      <apx-chart
+        [series]="lineOptions.series"
+        [xaxis]="lineOptions.xaxis"
+        [colors]="lineOptions.colors"
+        [chart]="lineOptions.chart"
+        [title]="lineOptions.title">
+      </apx-chart>
+    </div>
+
+    <div class="chart-card">
+       <p class="text-sm text-gray-500 mt-2">متوسط تقييمات العملاء للفنيين (من 5)</p>
+      <apx-chart
+        [series]="radialOptions.series"
+        [colors]="radialOptions.colors"
+        [chart]="radialOptions.chart"
+        [plotOptions]="radialOptions.plotOptions"
+        [labels]="radialOptions.labels">
+        
+      </apx-chart>
+      
+    </div>
+  </div>
+</div>

@@ -28,7 +28,7 @@
         <th>إجراءات</th>
       </tr>
     </thead>
-    <tbody>
+    <!-- <tbody>
       <tr *ngFor="let order of orders">
         <td data-label="رقم الأوردر">{{ order.id }}</td>
         <td data-label="العميل">{{ getClientName(order.clientId) }}</td>
@@ -47,7 +47,24 @@
           </button>
         </td>
       </tr>
-    </tbody>
+    </tbody> -->
+    <!-- <table>
+  <tbody> -->
+    @for (order of orders$ | async; track order.id) {
+    <tr>
+      <td>{{ order.id }}</td>
+      <td>{{ getClientName(order.clientId) | async }}</td>
+      <td>{{ getTradespersonName(order.tradespersonId) | async }}</td>
+      <td>{{ order.serviceType }}</td>
+      <td>{{ order.status }}</td>
+      <td>{{ order.date | date }}</td>
+      <td>
+        <button (click)="openModal(order)">تعديل</button>
+        <button (click)="deleteOrder(order.id)">حذف</button>
+      </td>
+    </tr>
+    }
+
   </table>
 </div>
 
@@ -59,7 +76,7 @@
   <h3>{{ isEditMode ? 'تعديل الأوردر' : 'إضافة أوردر جديد' }}</h3>
   <form #orderForm="ngForm" (ngSubmit)="saveOrder(orderForm)">
     <label>العميل:</label>
-    <select [(ngModel)]="newOrder.clientId" name="clientId" required>
+    <!-- <select [(ngModel)]="newOrder.clientId" name="clientId" required>
       <option [ngValue]="0">اختر العميل</option>
       <option *ngFor="let c of clients" [ngValue]="c.id">{{ c.name }}</option>
     </select>
@@ -68,7 +85,22 @@
     <select [(ngModel)]="newOrder.tradespersonId" name="tradespersonId" required>
       <option [ngValue]="0">اختر الفني</option>
       <option *ngFor="let t of tradespeople" [ngValue]="t.id">{{ t.name }} - {{ t.job }}</option>
-    </select>
+    </select> -->
+<select [(ngModel)]="newOrder.clientId" name="clientId" required>
+  <option value="">اختر عميل</option>
+  @for (client of clients$ | async; track client.id) {
+    <option [value]="client.id">{{ client.name }}</option>
+  }
+</select>
+
+<select [(ngModel)]="newOrder.tradespersonId" name="tradespersonId" required>
+  <option value="">اختر فني</option>
+  @for (person of tradespeople$ | async; track person.id) {
+    <option [value]="person.id">{{ person.name }} - {{ person.trade }}</option>
+  }
+</select>
+
+
 
     <label>نوع الخدمة:</label>
     <input type="text" [(ngModel)]="newOrder.serviceType" name="serviceType" required />
