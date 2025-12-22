@@ -1,38 +1,46 @@
-/* ========== إعدادات عامة ========== */
+/* ========== Global Styles ========== */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: "Cairo", "Segoe UI", sans-serif;
+  background: #f8f9fa;
+  color: #2d3748;
+  direction: rtl;
+  line-height: 1.6;
+}
+
+/* ========== Container ========== */
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 30px;
-  font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 30px 20px;
+  font-family: "Cairo", "Segoe UI", sans-serif;
   direction: rtl;
-  min-height: calc(100vh - 180px);
+  min-height: calc(100vh - 150px);
+  font-size: 90%;
 }
 
-/* ========== Header مع تأثيرات 3D ========== */
+/* ========== Header ========== */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-  padding: 35px 40px;
+  padding: 25px 30px;
   border-radius: 25px;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
   animation: slideInDown 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   right: -50%;
@@ -43,32 +51,67 @@
 }
 
 @keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.header h1 {
-  color: #2d3748;
-  font-size: 2.5rem;
-  font-weight: 800;
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
   position: relative;
   z-index: 1;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.page-title h1 {
+  color: #372B70;
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  position: relative;
+  z-index: 1;
+  background: #372B70;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* ========== أزرار مبدعة ========== */
+.page-title img {
+    filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.3));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ========== Buttons ========== */
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #372B70;
   color: white;
   border: none;
-  padding: 16px 40px;
+  padding: 12px 30px;
   border-radius: 50px;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 0.95em;
   font-weight: 700;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   display: inline-flex;
@@ -81,7 +124,7 @@
 }
 
 .btn-primary::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -98,343 +141,51 @@
   height: 300px;
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-primary:hover {
   transform: translateY(-5px) scale(1.05);
   box-shadow: 0 20px 50px rgba(102, 126, 234, 0.5);
-}
-
-.btn-primary:active {
-  transform: translateY(-2px) scale(1.02);
 }
 
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
 }
 
 .btn-secondary {
   background: linear-gradient(145deg, #f8f9fa, #e9ecef);
   color: #495057;
   border: 2px solid #dee2e6;
-  padding: 14px 40px;
+  padding: 12px 30px;
   border-radius: 50px;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 0.95em;
   font-weight: 700;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.btn-secondary:hover:not(:disabled) {
+.btn-secondary:hover {
   background: linear-gradient(145deg, #e9ecef, #dee2e6);
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.icon {
-  font-size: 22px;
-  font-weight: bold;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-/* ========== Form مع Glass Effect ========== */
+/* ========== Form Container ========== */
 .form-container {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 45px;
-  border-radius: 30px;
-  box-shadow:
-    0 30px 90px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 255, 255, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  margin-bottom: 40px;
-  animation: slideInUp 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-@keyframes slideInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.form-header {
-  margin-bottom: 35px;
-  padding: 20px;
-  border-bottom: 3px solid transparent;
-  background: linear-gradient(90deg, #667eea, #764ba2) padding-box,
-              linear-gradient(90deg, #667eea, #764ba2) border-box;
-  border-radius: 10px;
-}
-
-.form-header h2 {
-  color: #2d3748;
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-align: center;
-}
-
-/* ========== Form Grid مبدع ========== */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
-  margin-bottom: 30px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.form-group.full-width {
-  grid-column: 1 / -1;
-}
-
-.form-group label {
-  color: #4a5568;
-  font-weight: 700;
-  margin-bottom: 10px;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 16px 20px;
-  border: 2px solid #e2e8f0;
-  border-radius: 15px;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  font-family: inherit;
-  background: #ffffff;
-  position: relative;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #667eea;
-  background: #f7fafc;
-  box-shadow:
-    0 0 0 4px rgba(102, 126, 234, 0.1),
-    0 10px 25px rgba(102, 126, 234, 0.15);
-  transform: translateY(-2px);
-}
-
-.form-group input.invalid,
-.form-group select.invalid,
-.form-group textarea.invalid {
-  border-color: #f56565;
-  background: #fff5f5;
-  animation: shake 0.4s ease;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-  20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-/* ========== Checkbox مبدع ========== */
-.checkbox-group {
-  flex-direction: row;
-  align-items: center;
-  background: linear-gradient(145deg, #f8f9fa, #ffffff);
-  padding: 15px 20px;
-  border-radius: 15px;
-  border: 2px solid #e2e8f0;
-  transition: all 0.3s ease;
-}
-
-.checkbox-group:hover {
-  border-color: #667eea;
-  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
-}
-
-.checkbox-group label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  margin: 0;
-}
-
-.checkbox-group input[type="checkbox"] {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  accent-color: #667eea;
-  transform: scale(1.2);
-}
-
-/* ========== Error Messages ========== */
-.error {
-  color: #e53e3e;
-  font-size: 13px;
-  margin-top: 8px;
-  animation: slideInLeft 0.3s ease;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.error::before {
-  content: '⚠️';
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* ========== Image Upload مبدع ========== */
-.image-upload {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.btn-upload {
-  background: linear-gradient(135deg, #48bb78, #38a169);
-  color: white;
-  border: none;
-  padding: 14px 30px;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  width: fit-content;
-  box-shadow: 0 8px 20px rgba(72, 187, 120, 0.3);
-}
-
-.btn-upload:hover {
-  background: linear-gradient(135deg, #38a169, #2f855a);
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(72, 187, 120, 0.4);
-}
-
-.image-preview {
-  width: 180px;
-  height: 180px;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 4px solid #e2e8f0;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.image-preview:hover {
-  transform: scale(1.05) rotate(2deg);
-  border-color: #667eea;
-  box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
-}
-
-.image-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ========== Form Actions ========== */
-.form-actions {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  padding-top: 25px;
-  border-top: 2px solid #e2e8f0;
-}
-
-/* ========== Search Bar مع تأثيرات ========== */
-.search-bar {
   background: linear-gradient(145deg, #ffffff, #f8f9fa);
-  padding: 25px;
   border-radius: 20px;
-  margin-bottom: 30px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  position: relative;
-  overflow: hidden;
-}
-
-.search-bar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.05), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s;
-}
-
-.search-bar:hover::before {
-  transform: translateX(100%);
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 18px 25px 18px 50px;
-  border: 2px solid #e2e8f0;
-  border-radius: 50px;
-  font-size: 17px;
-  transition: all 0.3s ease;
-  background: white;
-  position: relative;
-  z-index: 1;
-}
-
-.search-bar input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-  transform: translateY(-2px);
-}
-
-/* ========== Table Container مبدع ========== */
-.table-container {
-  background: linear-gradient(145deg, #ffffff, #f8f9fa);
-  border-radius: 25px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  padding: 30px;
+  margin-bottom: 25px;
   animation: fadeIn 0.6s ease;
-  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 @keyframes fadeIn {
@@ -448,6 +199,291 @@
   }
 }
 
+.form-header {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.form-header h2 {
+  color: #2d3748;
+  font-size: 1.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #372B70;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.form-icon {
+  -webkit-text-fill-color: #667eea;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+/* ========== Form Group ========== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  color: #2d3748;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 14px 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95em;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: white;
+  color: #2d3748;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
+}
+
+.form-group input.invalid,
+.form-group select.invalid,
+.form-group textarea.invalid {
+  border-color: #f56565;
+}
+
+.form-group .error {
+  color: #f56565;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.checkbox-group label {
+  flex-direction: row;
+  gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* ========== Image Upload ========== */
+.image-upload {
+  position: relative;
+}
+
+.btn-upload {
+  background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+  border: 2px dashed #667eea;
+  color: #495057;
+  padding: 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn-upload:hover {
+  background: linear-gradient(145deg, #e9ecef, #dee2e6);
+  border-color: #4ba24b;
+}
+
+.image-preview {
+  position: relative;
+  margin-top: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 12px;
+}
+
+.image-preview:hover .image-overlay {
+  opacity: 1;
+}
+
+.btn-remove-image {
+  background: #f56565;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-remove-image:hover {
+  background: linear-gradient(135deg, #fed7d7, #fc8181);
+  border-color: #f56565;
+  transform: translateY(-5px) scale(1.15) rotate(5deg);
+  box-shadow: 0 10px 30px rgba(245, 101, 101, 0.4);
+}
+
+/* ========== Form Actions ========== */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  border-top: 2px solid #e2e8f0;
+}
+
+/* ========== Search Bar ========== */
+/* Search Bar Container */
+.search-bar {
+  width: 100%;
+  padding: 1rem 0;
+}
+
+/* Wrapper for relative positioning */
+.search-bar > div {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Search Icon Styling */
+.search-bar span {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.3rem;
+  color: #718096;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar img {
+  width: 20px;
+  height: 20px;
+  alt: "search icon";
+}
+
+/* Search Input Field */
+.search-bar input {
+  width: 100%;
+  padding: 12px 55px 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #2d3748;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+/* Input Placeholder Styling */
+.search-bar input::placeholder {
+  color: #a0aec0;
+  font-size: 0.95rem;
+}
+
+/* Input Focus State */
+.search-bar input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+  background-color: #ffffff;
+}
+
+/* Input Hover State */
+.search-bar input:hover:not(:focus) {
+  border-color: #cbd5e0;
+}
+
+/* Input Active/Typing State */
+.search-bar input:active {
+  border-color: #4299e1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .search-bar {
+    padding: 0.75rem 0;
+  }
+
+  .search-bar input {
+    padding: 10px 45px 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  .search-bar span {
+    right: 15px;
+  }
+
+  .search-bar img {
+    width: 18px;
+    height: 18px;
+  }
+}
+/* ========== Table Container ========== */
+.table-container {
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: fadeIn 0.6s ease;
+  margin-bottom: 20px;
+}
+
 table {
   width: 100%;
   border-collapse: separate;
@@ -455,32 +491,15 @@ table {
 }
 
 thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #372B70;
   color: white;
-  position: relative;
-}
-
-thead::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4, #ffd700);
-  animation: shimmer 3s linear infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: -100% 0; }
-  100% { background-position: 100% 0; }
 }
 
 thead th {
-  padding: 22px 18px;
+  padding: 18px 50px;
   text-align: right;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -489,6 +508,18 @@ tbody tr {
   border-bottom: 1px solid #e2e8f0;
   transition: all 0.3s ease;
   background: white;
+  animation: fadeInRow 0.4s ease backwards;
+}
+
+@keyframes fadeInRow {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 tbody tr:hover {
@@ -499,224 +530,160 @@ tbody tr:hover {
 }
 
 tbody td {
-  padding: 20px 18px;
+  padding: 16px 12px;
   vertical-align: middle;
+  color: #4a5568;
 }
 
-/* ========== Service Image مع تأثيرات ========== */
-.service-image {
-  width: 70px;
-  height: 70px;
-  border-radius: 15px;
-  overflow: hidden;
-  border: 3px solid #e2e8f0;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  position: relative;
+tbody td img {
+  border-radius: 8px;
 }
 
-.service-image::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s;
+/* ========== Table Content ========== */
+.actions {
+  display: flex;
+  gap: 10px;
 }
 
-.service-image:hover::before {
-  transform: translateX(100%);
+/* Added category badge styling with gradient background */
+tbody td:nth-child(3) {
+  padding: 16px 12px;
 }
 
-.service-image:hover {
-  transform: scale(1.15) rotate(5deg);
-  border-color: #667eea;
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-}
-
-.service-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ========== Service Info ========== */
-.service-info strong {
-  display: block;
-  color: #2d3748;
-  font-size: 16px;
-  margin-bottom: 6px;
-  font-weight: 700;
-}
-
-.service-info p {
-  color: #718096;
-  font-size: 14px;
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* ========== Category Badge مبدع ========== */
 .category-badge {
-  background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
-  color: #234e52;
-  padding: 8px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
   border-radius: 25px;
-  font-size: 14px;
   font-weight: 700;
-  display: inline-block;
-  box-shadow: 0 4px 15px rgba(66, 153, 225, 0.2);
+  font-size: 0.9rem;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  color: #0d47a1;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  border: 2px solid rgba(66, 153, 225, 0.2);
+  white-space: nowrap;
 }
 
 .category-badge:hover {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(66, 153, 225, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* ========== Price ========== */
-.price {
-  color: #38a169;
-  font-weight: 800;
-  font-size: 18px;
-  text-shadow: 0 2px 4px rgba(56, 161, 105, 0.2);
+/* Category colors for different categories */
+.category-badge.electric {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  color: #0d47a1;
 }
 
-/* ========== Date ========== */
-.date {
-  color: #718096;
-  font-size: 14px;
-  font-weight: 600;
-  background: #f7fafc;
-  padding: 5px 12px;
-  border-radius: 10px;
-  display: inline-block;
+.category-badge.plumbing {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  color: #663c00;
 }
 
-/* ========== Status ========== */
-.status {
-  padding: 8px 18px;
-  border-radius: 25px;
-  font-size: 14px;
-  font-weight: 700;
-  display: inline-block;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+.category-badge.hvac {
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  color: #1a237e;
 }
 
-.status.active {
-  background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
-  color: #22543d;
-  border: 2px solid #68d391;
+.category-badge.electrical {
+  background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+  color: #fff;
 }
 
-.status.inactive {
-  background: linear-gradient(135deg, #fed7d7, #fc8181);
-  color: #742a2a;
-  border: 2px solid #fc8181;
-}
-
-.status:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* ========== Actions مع تأثيرات 3D ========== */
-.actions {
-  display: flex;
-  gap: 12px;
+.category-badge.general {
+  background: linear-gradient(135deg, #b2f5ea 0%, #7ed4e3 100%);
+  color: #0d3b66;
 }
 
 .btn-icon {
   background: linear-gradient(145deg, #ffffff, #f8f9fa);
   border: 2px solid #e2e8f0;
-  font-size: 22px;
   cursor: pointer;
-  padding: 10px 12px;
-  border-radius: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-edit:hover {
-  background: linear-gradient(135deg, #bee3f8, #90cdf4);
+   background: linear-gradient(135deg, #bee3f8, #90cdf4);
   border-color: #4299e1;
   transform: translateY(-5px) scale(1.15) rotate(-5deg);
   box-shadow: 0 10px 30px rgba(66, 153, 225, 0.4);
 }
 
 .btn-delete:hover {
-  background: linear-gradient(135deg, #fed7d7, #fc8181);
+   background: linear-gradient(135deg, #fed7d7, #fc8181);
   border-color: #f56565;
   transform: translateY(-5px) scale(1.15) rotate(5deg);
   box-shadow: 0 10px 30px rgba(245, 101, 101, 0.4);
 }
 
-/* ========== Loading مع Animation ========== */
-.loading {
-  text-align: center;
-  padding: 80px;
-  color: #667eea;
-  font-size: 20px;
-  font-weight: 700;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 25px;
-}
-
-.spinner {
-  border: 5px solid #e2e8f0;
-  border-top: 5px solid #667eea;
-  border-right: 5px solid #764ba2;
-  border-radius: 50%;
-  width: 70px;
-  height: 70px;
-  animation: spin 1s linear infinite;
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* ========== No Data مبدع ========== */
+/* ========== No Data ========== */
 .no-data {
+  padding: 60px 30px;
   text-align: center;
-  padding: 80px;
-  color: #718096;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
-  background: linear-gradient(145deg, #f7fafc, #edf2f7);
-  border-radius: 20px;
-  margin: 20px;
+  gap: 15px;
 }
 
-.no-data-icon {
-  font-size: 100px;
-  animation: bounce 2s infinite;
-  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+.no-data h3 {
+  color: #2d3748;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .no-data p {
-  font-size: 20px;
-  font-weight: 600;
-  color: #4a5568;
+  color: #718096;
+  font-size: 0.95rem;
 }
 
-/* ========== Responsive Design ========== */
+/* ========== Loading ========== */
+.loading {
+  padding: 60px 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.spinner {
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading p {
+  color: #2d3748;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.loading small {
+  color: #a0aec0;
+  font-size: 0.9rem;
+}
+
+/* ========== Responsive ========== */
 @media (max-width: 1024px) {
   .form-grid {
     grid-template-columns: 1fr;
@@ -726,13 +693,18 @@ tbody td {
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     text-align: center;
-    padding: 25px;
+    padding: 20px;
   }
 
   .header h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    justify-content: center;
+  }
+
+  .header div:first-child {
+    width: 100%;
   }
 
   .table-container {
@@ -743,8 +715,17 @@ tbody td {
     min-width: 900px;
   }
 
+  .form-container {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
   .form-actions {
     flex-direction: column;
+    justify-content: flex-start;
   }
 
   .form-actions button {
@@ -753,38 +734,77 @@ tbody td {
 
   .container {
     padding: 20px 15px;
+    font-size: 85%;
+  }
+
+  .header h1 {
+    font-size: 1.4rem;
+  }
+
+  .no-data {
+    padding: 40px 20px;
+  }
+
+  .loading {
+    padding: 40px 20px;
   }
 }
 
-/* ========== تأثيرات إضافية ========== */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
-}
+@media (max-width: 480px) {
+  .header {
+    padding: 15px;
+  }
 
-.btn-primary.loading {
-  animation: pulse 1.5s ease-in-out infinite;
-}
+  .header h1 {
+    font-size: 1.2rem;
+  }
 
-/* تأثير الموجة عند الضغط */
-.btn-primary:active::after,
-.btn-secondary:active::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  transform: translate(-50%, -50%);
-  animation: ripple 0.6s ease-out;
-}
+  .header h1 img,
+  .btn-primary img,
+  .btn-secondary img {
+    width: 25px !important;
+    height: 25px !important;
+  }
 
-@keyframes ripple {
-  to {
-    width: 300px;
-    height: 300px;
-    opacity: 0;
+  .form-container {
+    padding: 15px;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 12px 15px;
+    font-size: 16px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  thead th {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+
+  tbody td {
+    padding: 12px 8px;
+  }
+
+  .actions {
+    gap: 5px;
+  }
+
+  .btn-icon {
+    padding: 6px 8px;
   }
 }

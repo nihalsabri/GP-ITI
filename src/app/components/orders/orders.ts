@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -38,7 +36,7 @@ interface OrderData {
   templateUrl: './orders.html',
   styleUrls: ['./orders.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule,MatIconModule]
 })
 export class OrdersComponent implements OnInit {
   orders$!: Observable<OrderData[]>;

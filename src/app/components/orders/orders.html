@@ -1,11 +1,21 @@
-<!-- src/app/components/orders/order.component.html -->
 <div class="orders-page">
-  <h2 class="page-title">الطلبات</h2>
+  <!-- Header Section -->
+  <div class="orders-header">
 
-  <div class="actions">
-    <button class="btn-add" (click)="openModal(); $event.stopPropagation()">أضف أوردر جديد</button>
+    <div class="header">
+      <h2 class="page-title">الطلبات</h2>
+      <img src="order.png" width="40" height="40" alt="orders icon" />
+    </div>
+
+    <div class="actions">
+      <button class="btn-add" (click)="openModal(); $event.stopPropagation()">
+        أضف أوردر جديد
+        <img src="add.png" width="30" height="30" alt="add icon" />
+      </button>
+    </div>
   </div>
 
+  <!-- Table Section -->
   <table class="orders-table">
     <thead>
       <tr>
@@ -20,15 +30,21 @@
     </thead>
     <!-- <tbody>
       <tr *ngFor="let order of orders">
-        <td>{{ order.id }}</td>
-        <td>{{ getClientName(order.clientId) }}</td>
-        <td>{{ getTradespersonName(order.tradespersonId) }}</td>
-        <td>{{ order.serviceType }}</td>
-        <td class="status {{ order.status }}">{{ order.status }}</td>
-        <td>{{ order.date }}</td>
-        <td>
-          <button class="btn-edit" (click)="openModal(order); $event.stopPropagation()">تعديل</button>
-          <button class="btn-delete" (click)="deleteOrder(order.id)">حذف</button>
+        <td data-label="رقم الأوردر">{{ order.id }}</td>
+        <td data-label="العميل">{{ getClientName(order.clientId) }}</td>
+        <td data-label="الفني">{{ getTradespersonName(order.tradespersonId) }}</td>
+        <td data-label="الخدمة">{{ order.serviceType }}</td>
+        <td data-label="الحالة">
+          <span class="status {{ order.status }}">{{ order.status }}</span>
+        </td>
+        <td data-label="التاريخ">{{ order.date }}</td>
+        <td data-label="إجراءات">
+          <button class="btn-edit" (click)="openModal(order); $event.stopPropagation()">
+               <mat-icon>edit</mat-icon>
+          </button>
+          <button class="btn-delete" (click)="deleteOrder(order.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </td>
       </tr>
     </tbody> -->
@@ -52,8 +68,10 @@
   </table>
 </div>
 
+<!-- Modal Overlay -->
 <div class="overlay" [class.show]="isModalOpen" (click)="onOverlayClick($event)"></div>
 
+<!-- Modal -->
 <div class="modal" [class.show]="isModalOpen" (click)="$event.stopPropagation()">
   <h3>{{ isEditMode ? 'تعديل الأوردر' : 'إضافة أوردر جديد' }}</h3>
   <form #orderForm="ngForm" (ngSubmit)="saveOrder(orderForm)">
@@ -98,8 +116,14 @@
     <input type="date" [(ngModel)]="newOrder.date" name="date" required />
 
     <div class="modal-actions">
-      <button type="submit">{{ isEditMode ? 'تحديث' : 'إضافة' }}</button>
-      <button type="button" (click)="closeModal()">إلغاء</button>
+      <button type="submit" class="action-btn">
+        <img [src]="isEditMode ? 'editIcon.svg' : 'add.png'" width="20" height="20" alt="" />
+        <span>{{ isEditMode ? 'تحديث' : 'إضافة' }}</span>
+      </button>
+      <button type="button" class="close-btn" (click)="closeModal()">
+        <img src="falseIcon.svg" width="20" height="20" alt="cancel" />
+        <span>إلغاء</span>
+      </button>
     </div>
   </form>
 </div>
