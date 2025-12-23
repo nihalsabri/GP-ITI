@@ -35,6 +35,7 @@
   animation: rotate 20s linear infinite;
 }
 
+
 @keyframes rotate {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -537,6 +538,8 @@
   overflow-y: auto;
   position: relative;
   animation: fadeIn 0.3s ease;
+  text-align:right;
+  direction:rtl;
 }
 
 .modal-card h4 {
@@ -667,10 +670,13 @@
 /* ========== Modal Actions ========== */
 .modal-actions {
   display: flex;
+  flex-direction:row-reverse;
   gap: 15px;
   justify-content: center;
   margin-top: 20px;
   flex-wrap: wrap;
+    text-align:right;
+  direction:rtl;
 }
 
 .btn {

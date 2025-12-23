@@ -8,25 +8,84 @@
     0 0 0 1px rgba(102, 126, 234, 0.05);
   display: flex;
   flex-direction: column;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 1000;
   overflow: hidden;
   border-right: 1px solid rgba(102, 126, 234, 0.1);
   font-family: 'Cairo', 'Segoe UI', sans-serif;
-  direction: ltr;
+    transition: width 0.3s ease;
+     direction: rtl;
+  text-align:right;
+
 }
+.sidebar.collapsed {
+  width: 80px !important;
+}
+
+.dashboard-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  width: fit-content;
+   position: relative;  
+  z-index: 2;
+
+}
+.dashboard-link h4{
+    justify-content: center;
+  padding: 16px 10px;
+    color: #ffffff;
+}
+
+.dashboard-link:hover .dashboard-title {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+.sidebar.collapsed .nav-item {
+  justify-content: center;
+  padding: 16px 10px;
+}
+
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+}
+
+
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .user-details,
+.sidebar.collapsed .dashboard-title {
+  display: none !important;
+}
+
+.sidebar.collapsed .nav-item {
+  justify-content: center;
+  padding: 16px 10px;
+}
+
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+  padding: 20px 10px;
+}
+
+.sidebar.collapsed .sidebar-nav {
+  padding: 25px 5px;
+}
+
+.sidebar.collapsed .nav-item .nav-icon {
+  margin: 0;
+}
+
+
 
 /* ========== Sidebar Header ========== */
 .sidebar-header {
-  padding: 30px 20px;
+  padding: 25px 20px;
   background: linear-gradient(135deg, #372B70 0%, #764ba2 100%);
   position: relative;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
 }
-
+.btn-toggle{
+  border: none;
+}
 .sidebar-header::before {
   content: '';
   position: absolute;
@@ -198,25 +257,25 @@
 
 /* ========== Active State ========== */
 .nav-item.active {
-  background: linear-gradient(135deg, #372B70 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #372B70 0%, #372B70 100%);
   color: white;
   box-shadow:
     0 10px 30px rgba(102, 126, 234, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transform: translateX(8px) scale(1.03);
+  transform: translateX(-8px) scale(1.03);
   border-color: rgba(255, 255, 255, 0.2);
 }
 
 .nav-item.active::after {
   content: '';
   position: absolute;
-  right: 0;
+   left: 0;
   top: 50%;
   transform: translateY(-50%);
   width: 5px;
   height: 30px;
   background: white;
-  border-radius: 10px 0 0 10px;
+  border-radius: 0 10px 10px 0;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 

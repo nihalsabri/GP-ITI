@@ -1,17 +1,18 @@
 .layout-container {
   display: flex;
-  height: 100vh; /* كامل ارتفاع الشاشة */
+  height: 100%;
   margin: 0;
   padding: 0;
 }
 
-.sidebar {
-  flex: 0 0 20%; /* Sidebar ياخذ 20% من العرض */
+/* .sidebar {
+  flex: 0 0 20%; 
   height: 100%;
-}
+} */
 
 .main-content {
-  flex: 1; /* المحتوى الرئيسي ياخذ باقي المساحة */
+  flex: 1;
   height: 100%;
-  overflow-y: auto; /* تمرير عمودي اذا كان المحتوى طويل */
+  overflow: hidden;
+
 }

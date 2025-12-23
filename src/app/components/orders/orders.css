@@ -7,10 +7,13 @@
 .orders-page {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 30px;
-  font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 30px 20px;
+  font-family: 'Cairo', 'Segoe UI', sans-serif;
   direction: rtl;
+  text-align: right;
   min-height: calc(100vh - 180px);
+   font-size: 90%;
+ 
 }
 
 /* ========== Header / 3D animations ========== */
@@ -18,9 +21,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-  padding: 35px 40px;
+  padding: 25px 30px;
   border-radius: 25px;
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.1),
@@ -326,6 +329,8 @@
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
+  text-align: right;
+  direction:rtl;
 }
 
 .modal.show {
@@ -350,6 +355,7 @@
   font-size: 1.5rem;
   text-align: center;
   font-weight: 700;
+  text-align: right;
 }
 
 .modal form {
@@ -392,6 +398,7 @@
   gap: 10px;
   justify-content: center;
   margin-top: 20px;
+  text-align: right;
 }
 
 .action-btn,

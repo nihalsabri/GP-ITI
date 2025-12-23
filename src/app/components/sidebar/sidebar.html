@@ -1,25 +1,27 @@
-<div class="sidebar">
+<div class="sidebar" [class.collapsed]="isCollapsed">
   <!-- Logo & Brand -->
+     <!-- <button class="btn-toggle" (click)="toggleSidebar()" title="Toggle Sidebar">
+    <span class="toggle-icon">{{ isCollapsed ? '☰' : '→' }}</span>
+  </button> -->
+  <button class="btn-toggle" (click)="toggleSidebar()" title="Toggle Sidebar">
+  <i class="material-icons toggle-icon">
+    {{ isCollapsed ? 'menu' : 'chevron_right' }}
+  </i>
+</button>
   <div class="sidebar-header">
-    <button class="btn-toggle" (click)="toggleSidebar()" title="Toggle Sidebar">
-      <span class="toggle-icon">{{ isCollapsed ? '→' : '←' }}</span>
-    </button>
-    <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
-          <h4 class="dashboard-title" [class.hidden]="isCollapsed">Dashboard</h4>
-
-    </a>
-  </div>
-
+<a [routerLink]="['/dashboard']" routerLinkActive="active" class="dashboard-link">
+  <h4 class="dashboard-title" [class.hidden]="isCollapsed">لوحة التحكم</h4>
+</a>
+</div>
   <!-- Navigation Menu -->
   <nav class="sidebar-nav">
-
 
     <a routerLink="services"
        routerLinkActive="active"
        class="nav-item"
        title="Services Management">
       <span class="nav-icon"><img src="settingIcon.svg" width="30" height="30"/></span>
-      <span class="nav-text">Services</span>
+      <span class="nav-text">الخدمات</span>
       <span class="nav-indicator"></span>
     </a>
 
@@ -28,7 +30,7 @@
        class="nav-item"
        title="Tradespeople Management">
       <span class="nav-icon"><img src="factor.png" width="30" height="30"/></span>
-      <span class="nav-text">Tradespeople</span>
+      <span class="nav-text">الفنيين</span>
       <span class="nav-indicator"></span>
     </a>
 
@@ -37,7 +39,7 @@
        class="nav-item"
        title="Clients Management">
       <span class="nav-icon"><img src="clients.png" width="30" height="30"/></span>
-      <span class="nav-text">Clients</span>
+      <span class="nav-text">العملاء</span>
       <span class="nav-indicator"></span>
     </a>
 
@@ -46,13 +48,14 @@
        class="nav-item"
        title="Orders Management">
       <span class="nav-icon"><img src="order.png" width="30" height="30"/></span>
-      <span class="nav-text">Orders</span>
+      <span class="nav-text">الطلبات</span>
       <span class="nav-indicator"></span>
     </a>
   </nav>
 
   <!-- Sidebar Footer -->
-  <div class="sidebar-footer">
+  <!-- <div class="sidebar-footer">
+
     <div class="user-info">
       <div class="user-avatar">
         <span><img src="admin.png" width="30" height="30"/></span>
@@ -63,5 +66,10 @@
     </div>
 
 
-  </div>
+  </div> -->
+
+ <!-- <button class="btn-open-sidebar" *ngIf="isCollapsed" (click)="toggleSidebar()" title="Open Sidebar">
+    <span class="open-icon">☰</span>
+  </button> -->
+
 </div>

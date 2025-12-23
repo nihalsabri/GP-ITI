@@ -9,7 +9,7 @@
 
     <div class="actions">
       <button class="btn-add" (click)="openModal(); $event.stopPropagation()">
-        أضف أوردر جديد
+        أضف طلب جديد
         <img src="add.png" width="30" height="30" alt="add icon" />
       </button>
     </div>
@@ -19,7 +19,7 @@
   <table class="orders-table">
     <thead>
       <tr>
-        <th>رقم الأوردر</th>
+        <th>رقم الطلب</th>
         <th>العميل</th>
         <th>الفني</th>
         <th>الخدمة</th>
@@ -28,11 +28,14 @@
         <th>إجراءات</th>
       </tr>
     </thead>
-    <!-- <tbody>
-      <tr *ngFor="let order of orders">
+    <tbody>
+      @for (order of orders$ | async; track order.id) {
+        
+      <!-- <tr *ngFor="let order of orders"> -->
+      <tr>
         <td data-label="رقم الأوردر">{{ order.id }}</td>
-        <td data-label="العميل">{{ getClientName(order.clientId) }}</td>
-        <td data-label="الفني">{{ getTradespersonName(order.tradespersonId) }}</td>
+        <td data-label="العميل">{{ getClientName(order.clientId) |async}}</td>
+        <td data-label="الفني">{{getTradespersonName(order.tradespersonId) | async }}</td>
         <td data-label="الخدمة">{{ order.serviceType }}</td>
         <td data-label="الحالة">
           <span class="status {{ order.status }}">{{ order.status }}</span>
@@ -47,12 +50,13 @@
           </button>
         </td>
       </tr>
-    </tbody> -->
+    }
+    </tbody>
     <!-- <table>
   <tbody> -->
-    @for (order of orders$ | async; track order.id) {
+    <!-- @for (order of orders$ | async; track order.id) {
     <tr>
-      <td>{{ order.id }}</td>
+      <td data-label="رقم الأوردر">{{ order.id }}</td>
       <td>{{ getClientName(order.clientId) | async }}</td>
       <td>{{ getTradespersonName(order.tradespersonId) | async }}</td>
       <td>{{ order.serviceType }}</td>
@@ -63,8 +67,7 @@
         <button (click)="deleteOrder(order.id)">حذف</button>
       </td>
     </tr>
-    }
-
+    } -->
   </table>
 </div>
 
@@ -73,7 +76,7 @@
 
 <!-- Modal -->
 <div class="modal" [class.show]="isModalOpen" (click)="$event.stopPropagation()">
-  <h3>{{ isEditMode ? 'تعديل الأوردر' : 'إضافة أوردر جديد' }}</h3>
+  <h3>{{ isEditMode ? 'تعديل طلب' : 'إضافة طلب جديد' }}</h3>
   <form #orderForm="ngForm" (ngSubmit)="saveOrder(orderForm)">
     <label>العميل:</label>
     <!-- <select [(ngModel)]="newOrder.clientId" name="clientId" required>
@@ -92,6 +95,7 @@
     <option [value]="client.id">{{ client.name }}</option>
   }
 </select>
+    <label>الفنى:</label>
 
 <select [(ngModel)]="newOrder.tradespersonId" name="tradespersonId" required>
   <option value="">اختر فني</option>
